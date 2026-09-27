@@ -1,0 +1,30 @@
+# Ce depot ne contient que le cadrage et le suivi du projet Fragrance.
+# Le template Modave (modavereact/) n'est jamais publie ici : voir README.md
+# pour la raison (licence/provenance a verifier avant toute publication).
+modavereact/
+modavereact-10.rar
+documentation/
+
+# Archives
+*.rar
+*.zip
+*.7z
+*.tar
+*.tar.gz
+
+# Dependances et builds (au cas ou un projet serait ajoute ici plus tard)
+node_modules/
+dist/
+dist-ssr/
+build/
+
+# Secrets et environnement
+.env
+.env.*
+*.pem
+*.key
+*credentials*
+
+# Divers
+*.log
+.DS_Store
