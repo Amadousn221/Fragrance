@@ -1,6 +1,5 @@
-# Ce depot ne contient que le cadrage et le suivi du projet Fragrance.
-# Le template Modave (modavereact/) n'est jamais publie ici : voir README.md
-# pour la raison (licence/provenance a verifier avant toute publication).
+# Copie locale de reference du template (non versionnee) :
+# voir README.md pour la raison (licence/provenance a verifier).
 modavereact/
 modavereact-10.rar
 documentation/
@@ -12,19 +11,39 @@ documentation/
 *.tar
 *.tar.gz
 
-# Dependances et builds (au cas ou un projet serait ajoute ici plus tard)
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependances et builds
 node_modules/
 dist/
 dist-ssr/
 build/
+*.local
 
 # Secrets et environnement
 .env
 .env.*
+!.env.example
 *.pem
 *.key
 *credentials*
 
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
 # Divers
-*.log
 .DS_Store
