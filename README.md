@@ -1,27 +1,41 @@
-# Fragrance — cadrage, suivi de projet et application Vite
+# Fragrance — cadrage, suivi de projet et application Next.js
 
 Fragrance est le nom de travail d'un projet de boutique multimarque de parfums
-(Sénégal). Ce dépôt contient à la fois le **cadrage métier / l'architecture
-technique proposée** et, depuis ce commit, **l'application front-end Vite +
-React** à la racine du dépôt, prête à être déployée sur Vercel.
+(Sénégal). Ce dépôt contient le **cadrage métier / l'architecture technique** et
+l'**application front-end Next.js** (App Router) à la racine, déployée sur Vercel.
 
 ## Application (racine du dépôt)
 
-L'application est un prototype technique basé sur le template commercial
-**Modave React** (Themesflat) : Vite + React 19, routing via
-`react-router-dom`.
+Basée sur le template **Modave React** (Themesflat), migré de Vite/react-router
+vers **Next.js 16 (App Router) + React 19**. Backend e-commerce : WordPress +
+WooCommerce (lecture via API, côté serveur uniquement).
 
-- `src/`, `public/`, `index.html`, `package.json`, `vite.config.js`,
-  `jsconfig.json` : code de l'application
-- `vercel.json` : configuration Vercel (SPA fallback vers `/index.html`)
+- `app/` : routes (pages du template + `shop`, `product/[slug]`, `category/[slug]`, `api/woocommerce/*`)
+- `components/`, `context/`, `data/`, `reducer/`, `styles/`, `utlis/` : composants et données du template
+- `lib/woocommerce/` : client serveur WooCommerce (produits, slug, catégories, variations, images, prix, stock)
+- `public/` : assets, CSS/SCSS du template
+- `legacy-vite/` : anciens fichiers Vite conservés pour référence (non utilisés)
+
+### WooCommerce
+
+Copier `.env.example` vers `.env.local` et renseigner (serveur uniquement,
+jamais de préfixe `NEXT_PUBLIC_`) :
+
+```
+WOOCOMMERCE_URL=
+WOOCOMMERCE_CONSUMER_KEY=
+WOOCOMMERCE_CONSUMER_SECRET=
+```
+
+Sans ces variables, `/shop`, `/category/*` et `/product/*` affichent « Catalogue non connecté ».
 
 ### Commandes
 
 ```bash
 npm install
 npm run dev      # serveur de développement
-npm run build     # build de production -> dist/
-npm run preview   # prévisualisation du build
+npm run build    # build de production (.next/)
+npm run start    # serveur de production
 ```
 
 ### Point de vigilance — licence du template
