@@ -3,27 +3,27 @@ import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 import Topbar6 from "@/components/headers/Topbar6";
 import PageTitle from "@/components/woocommerce/PageTitle";
-import ProductGrid from "@/components/woocommerce/ProductGrid";
+import ShopCatalog from "@/components/woocommerce/ShopCatalog";
 import CatalogNotice from "@/components/woocommerce/CatalogNotice";
 import { getCategoryBySlug, getProducts, isWooConfigured } from "@/lib/woocommerce";
-
-export const revalidate = 300;
+import { parseShopParams, toWooQuery } from "@/lib/woocommerce/shop-query";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   return { title: `${slug} | Fragrance` };
 }
 
-export default async function CategoryPage({ params }) {
+export default async function CategoryPage({ params, searchParams }) {
   const { slug } = await params;
+  const state = parseShopParams(await searchParams);
   let category = null;
-  let products = [];
+  let result = { products: [], total: 0, totalPages: 1 };
   let error = !isWooConfigured() ? "Catalogue non connecté." : null;
   if (!error) {
     try {
       category = await getCategoryBySlug(slug);
       if (!category) notFound();
-      ({ products } = await getProducts({ category: category.id, perPage: 24 }));
+      result = await getProducts(toWooQuery(state, { category: category.id }));
     } catch (e) {
       if (e?.digest?.startsWith?.("NEXT_")) throw e;
       error = "Le catalogue est momentanément indisponible.";
@@ -36,7 +36,7 @@ export default async function CategoryPage({ params }) {
       <PageTitle title={category?.name || slug} trail={[{ href: "/shop", label: "Boutique" }]} />
       <section className="flat-spacing">
         <div className="container">
-          {error ? <CatalogNotice>{error}</CatalogNotice> : <ProductGrid products={products} />}
+          {error ? <CatalogNotice>{error}</CatalogNotice> : <ShopCatalog {...result} state={state} basePath={`/category/${slug}`} />}
         </div>
       </section>
       <Footer1 />
