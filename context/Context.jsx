@@ -43,6 +43,21 @@ export default function Context({ children }) {
     }
   };
 
+  // Ligne panier WooCommerce : meme product_id + meme variation_id => quantite cumulee.
+  // `id`, `title`, `imgSrc` conservent la compatibilite avec les composants Modave existants.
+  const addWooItem = (line, isModal = true) => {
+    const lineId = `${line.product_id}:${line.variation_id ?? 0}`;
+    const qty = Math.max(1, Number(line.quantity) || 1);
+    setCartProducts((pre) => {
+      const found = pre.find((l) => l.lineId === lineId);
+      if (found) {
+        return pre.map((l) => (l.lineId === lineId ? { ...l, quantity: l.quantity + qty } : l));
+      }
+      return [...pre, { ...line, variation_id: line.variation_id ?? null, quantity: qty, lineId, id: lineId, title: line.name, imgSrc: line.image }];
+    });
+    if (isModal) openCartModal();
+  };
+
   const updateQuantity = (id, qty) => {
     if (isAddedToCartProducts(id)) {
       let item = cartProducts.filter((elm) => elm.id == id)[0];
@@ -115,6 +130,7 @@ export default function Context({ children }) {
     setCartProducts,
     totalPrice,
     addProductToCart,
+    addWooItem,
     isAddedToCartProducts,
     removeFromWishlist,
     addToWishlist,
