@@ -5,6 +5,7 @@ import QuantitySelect from "@/components/productDetails/QuantitySelect";
 import ProductGallery from "./ProductGallery";
 import { useContextElement } from "@/context/Context";
 import { formatPrice } from "@/lib/format";
+import { wishlistEntry } from "@/lib/woocommerce/wishlist";
 import {
   findVariation,
   getOptionState,
@@ -16,7 +17,7 @@ import {
 // Fiche produit WooCommerce dans le design Modave (structure de Details1).
 // Les selecteurs sont generes depuis les attributs WooCommerce (variation: true).
 export default function ProductPurchase({ product }) {
-  const { addWooItem, addToWishlist, isAddedtoWishlist } = useContextElement();
+  const { addWooItem, toggleWishlist, isAddedtoWishlist } = useContextElement();
   const variationAttrs = useMemo(() => getVariationAttributes(product), [product]);
   const staticAttrs = useMemo(() => getStaticAttributes(product), [product]);
   const isVariable = product.type === "variable";
@@ -193,7 +194,7 @@ export default function ProductPurchase({ product }) {
                           )}
                         </button>
                         <a
-                          onClick={() => addToWishlist(product.id)}
+                          onClick={() => toggleWishlist(wishlistEntry(product, variation?.image?.src))}
                           className="box-icon hover-tooltip text-caption-2 wishlist btn-icon-action"
                         >
                           <span className="icon icon-heart" />

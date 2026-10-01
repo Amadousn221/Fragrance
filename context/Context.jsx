@@ -12,7 +12,7 @@ export const useContextElement = () => {
 
 export default function Context({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
-  const [wishList, setWishList] = useState([1, 2, 3]);
+  const [wishList, setWishList] = useState([]);
   const [compareItem, setCompareItem] = useState([1, 2, 3]);
   const [quickViewItem, setQuickViewItem] = useState(allProducts[0]);
   const [quickAddItem, setQuickAddItem] = useState(1);
@@ -82,18 +82,27 @@ export default function Context({ children }) {
     }
   };
 
-  const addToWishlist = (id) => {
-    if (!wishList.includes(id)) {
-      setWishList((pre) => [...pre, id]);
-      openWistlistModal();
-    }
+  // Wishlist locale : entrees { product_id, slug, name, price, image } (vrais IDs WooCommerce).
+  // Un id numerique brut (pages demo Modave) reste accepte mais n'est ni affiche ni compte.
+  const wishKey = (e) => (typeof e === "object" && e !== null ? e.product_id : e);
+  const isAddedtoWishlist = (id) => wishList.some((e) => wishKey(e) == id);
+
+  const addToWishlist = (entry, isModal = true) => {
+    if (isAddedtoWishlist(wishKey(entry))) return;
+    setWishList((pre) => [...pre, entry]);
+    if (isModal) openWistlistModal();
   };
 
   const removeFromWishlist = (id) => {
-    if (wishList.includes(id)) {
-      setWishList((pre) => [...pre.filter((elm) => elm != id)]);
-    }
+    setWishList((pre) => pre.filter((e) => wishKey(e) != id));
   };
+
+  const toggleWishlist = (entry) => {
+    if (isAddedtoWishlist(wishKey(entry))) removeFromWishlist(wishKey(entry));
+    else addToWishlist(entry);
+  };
+
+  const wishlistItems = wishList.filter((e) => typeof e === "object" && e !== null);
   const addToCompareItem = (id) => {
     if (!compareItem.includes(id)) {
       setCompareItem((pre) => [...pre, id]);
@@ -103,12 +112,6 @@ export default function Context({ children }) {
     if (compareItem.includes(id)) {
       setCompareItem((pre) => [...pre.filter((elm) => elm != id)]);
     }
-  };
-  const isAddedtoWishlist = (id) => {
-    if (wishList.includes(id)) {
-      return true;
-    }
-    return false;
   };
   const isAddedtoCompareItem = (id) => {
     if (compareItem.includes(id)) {
@@ -127,10 +130,14 @@ export default function Context({ children }) {
     localStorage.setItem("cartList", JSON.stringify(cartProducts));
   }, [cartProducts]);
   useEffect(() => {
-    const items = JSON.parse(localStorage.getItem("wishlist"));
-    if (items?.length) {
-      setWishList(items);
-    }
+    try {
+      const items = JSON.parse(localStorage.getItem("wishlist"));
+      // Les anciens ids demo ([1,2,3]) sont ignores : seules les entrees WooCommerce sont reprises.
+      const valid = Array.isArray(items)
+        ? items.filter((e) => e && typeof e === "object" && e.product_id)
+        : [];
+      if (valid.length) setWishList(valid);
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -152,6 +159,8 @@ export default function Context({ children }) {
     isAddedtoWishlist,
     quickViewItem,
     wishList,
+    wishlistItems,
+    toggleWishlist,
     setQuickViewItem,
     quickAddItem,
     setQuickAddItem,

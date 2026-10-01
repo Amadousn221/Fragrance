@@ -2,10 +2,11 @@
 import Link from "next/link";
 import { useContextElement } from "@/context/Context";
 import { formatPrice } from "@/lib/format";
+import { wishlistEntry } from "@/lib/woocommerce/wishlist";
 
 // Carte produit en vue liste (balisage de ProductsCards6) alimentee par un produit WooCommerce.
 export default function WooProductCardList({ product }) {
-  const { addWooItem, addToWishlist, isAddedtoWishlist } = useContextElement();
+  const { addWooItem, toggleWishlist, isAddedtoWishlist } = useContextElement();
   const href = `/product/${product.slug}`;
 
   const addSimple = () =>
@@ -62,7 +63,7 @@ export default function WooProductCardList({ product }) {
                 Ajouter au panier
               </a>
             )}
-            <a onClick={() => addToWishlist(product.id)} className="box-icon wishlist btn-icon-action">
+            <a onClick={() => toggleWishlist(wishlistEntry(product))} className="box-icon wishlist btn-icon-action">
               <span className="icon icon-heart" />
               <span className="tooltip">
                 {isAddedtoWishlist(product.id) ? "Déjà dans les favoris" : "Favoris"}

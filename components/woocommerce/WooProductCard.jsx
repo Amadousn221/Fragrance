@@ -2,11 +2,12 @@
 import Link from "next/link";
 import { useContextElement } from "@/context/Context";
 import { formatPrice } from "@/lib/format";
+import { wishlistEntry } from "@/lib/woocommerce/wishlist";
 
 // Carte produit Modave (memes classes que ProductCard1) alimentee par un produit WooCommerce normalise.
 // Liens vers /product/[slug] ; prix en F CFA ; panier = lignes WooCommerce.
 export default function WooProductCard({ product, gridClass = "" }) {
-  const { addWooItem, addToWishlist, isAddedtoWishlist } = useContextElement();
+  const { addWooItem, toggleWishlist, isAddedtoWishlist } = useContextElement();
   const href = `/product/${product.slug}`;
   const isVariable = product.type === "variable";
 
@@ -55,7 +56,7 @@ export default function WooProductCard({ product, gridClass = "" }) {
         )}
         <div className="list-product-btn">
           <a
-            onClick={() => addToWishlist(product.id)}
+            onClick={() => toggleWishlist(wishlistEntry(product))}
             className="box-icon wishlist btn-icon-action"
           >
             <span className="icon icon-heart" />

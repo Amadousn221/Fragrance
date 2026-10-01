@@ -5,8 +5,8 @@ import Wishlist from "@/components/otherPages/Wishlist";
 import Link from "next/link";
 import React from "react";
 export const metadata = {
-  title: "Wishlist || Modave - Multipurpose Reactjs eCommerce Template",
-  description: "Modave - Multipurpose Reactjs eCommerce Template",
+  title: "Mes favoris | Fragrance",
+  description: "Vos produits favoris.",
 };
 export default function WishListPage() {
   return (
@@ -18,25 +18,25 @@ export default function WishListPage() {
         style={{ backgroundImage: "url(/images/section/page-title.jpg)" }}
       >
         <div className="container">
-          <h3 className="heading text-center">Your Wishlist</h3>
+          <h3 className="heading text-center">Mes favoris</h3>
           <ul className="breadcrumbs d-flex align-items-center justify-content-center">
             <li>
               <Link className="link" href={`/`}>
-                Homepage
+                Accueil
               </Link>
             </li>
             <li>
               <i className="icon-arrRight" />
             </li>
             <li>
-              <Link className="link" href={`/shop-default-grid`}>
-                Shop
+              <Link className="link" href={`/shop`}>
+                Boutique
               </Link>
             </li>
             <li>
               <i className="icon-arrRight" />
             </li>
-            <li>Wishlist</li>
+            <li>Favoris</li>
           </ul>
         </div>
       </div>

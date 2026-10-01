@@ -1,4 +1,5 @@
 "use client";
+import WishlistLength from "../common/WishlistLength";
 import React from "react";
 import Nav from "./Nav";
 
@@ -132,6 +133,9 @@ export default function Header1({ fullWidth = false }) {
                       strokeLinejoin="round"
                     />
                   </svg>
+                  <span className="count-box">
+                    <WishlistLength />
+                  </span>
                 </Link>
               </li>
               <li className="nav-cart">
