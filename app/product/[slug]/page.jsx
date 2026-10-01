@@ -5,7 +5,8 @@ import Topbar6 from "@/components/headers/Topbar6";
 import PageTitle from "@/components/woocommerce/PageTitle";
 import CatalogNotice from "@/components/woocommerce/CatalogNotice";
 import ProductPurchase from "@/components/woocommerce/ProductPurchase";
-import { getProductBySlug, isWooConfigured } from "@/lib/woocommerce";
+import WooRelatedProducts from "@/components/woocommerce/WooRelatedProducts";
+import { getProductBySlug, getRelatedProducts, isWooConfigured } from "@/lib/woocommerce";
 
 export const revalidate = 300;
 
@@ -13,7 +14,10 @@ async function load(slug) {
   if (!isWooConfigured()) return { error: "Catalogue non connecté." };
   try {
     const product = await getProductBySlug(slug);
-    return product ? { product } : { missing: true };
+    if (!product) return { missing: true };
+    // Les produits lies ne doivent jamais empecher l'affichage de la fiche.
+    const related = await getRelatedProducts(product).catch(() => []);
+    return { product, related };
   } catch {
     return { error: "Le catalogue est momentanément indisponible." };
   }
@@ -28,7 +32,7 @@ export async function generateMetadata({ params }) {
 // Le serveur charge le produit ; ProductPurchase (client) gere la selection de variations.
 export default async function ProductPage({ params }) {
   const { slug } = await params;
-  const { product, error, missing } = await load(slug);
+  const { product, related, error, missing } = await load(slug);
   if (missing) notFound();
 
   return (
@@ -39,7 +43,10 @@ export default async function ProductPage({ params }) {
       {error ? (
         <CatalogNotice>{error}</CatalogNotice>
       ) : (
-        <ProductPurchase product={product} />
+        <>
+          <ProductPurchase product={product} />
+          <WooRelatedProducts products={related} />
+        </>
       )}
       <Footer1 />
     </>
