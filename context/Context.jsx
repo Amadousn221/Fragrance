@@ -58,6 +58,18 @@ export default function Context({ children }) {
     if (isModal) openCartModal();
   };
 
+  const setLineQuantity = (lineId, qty) => {
+    const n = Math.floor(Number(qty));
+    if (!(n >= 1)) return;
+    setCartProducts((pre) => pre.map((l) => (l.id == lineId ? { ...l, quantity: n } : l)));
+  };
+
+  const removeCartLine = (lineId) => {
+    setCartProducts((pre) => pre.filter((l) => l.id != lineId));
+  };
+
+  const cartCount = cartProducts.reduce((n, l) => n + l.quantity, 0);
+
   const updateQuantity = (id, qty) => {
     if (isAddedToCartProducts(id)) {
       let item = cartProducts.filter((elm) => elm.id == id)[0];
@@ -131,6 +143,9 @@ export default function Context({ children }) {
     totalPrice,
     addProductToCart,
     addWooItem,
+    setLineQuantity,
+    removeCartLine,
+    cartCount,
     isAddedToCartProducts,
     removeFromWishlist,
     addToWishlist,

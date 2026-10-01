@@ -3,19 +3,16 @@ import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
 import { useContextElement } from "@/context/Context";
-import { products41 } from "@/data/products";
+import { formatPrice } from "@/lib/format";
 export default function CartModal() {
   const {
     cartProducts,
     setCartProducts,
     totalPrice,
-    addProductToCart,
-    isAddedToCartProducts,
+    removeCartLine,
   } = useContextElement();
 
-  const removeItem = (id) => {
-    setCartProducts((pre) => [...pre.filter((elm) => elm.id != id)]);
-  };
+  const removeItem = (lineId) => removeCartLine(lineId);
 
   const [currentOpenPopup, setCurrentOpenPopup] = useState("");
 
@@ -23,50 +20,6 @@ export default function CartModal() {
     <div className="modal fullRight fade modal-shopping-cart" id="shoppingCart">
       <div className="modal-dialog">
         <div className="modal-content">
-          <div className="tf-minicart-recommendations">
-            <h6 className="title">You May Also Like</h6>
-            <div className="wrap-recommendations">
-              <div className="list-cart">
-                {products41.map((product, index) => (
-                  <div className="list-cart-item" key={index}>
-                    <div className="image">
-                      <img
-                        className="lazyload"
-                        data-src={product.imgSrc}
-                        alt={product.alt}
-                        src={product.imgSrc}
-                        width={600}
-                        height={800}
-                      />
-                    </div>
-                    <div className="content">
-                      <div className="name">
-                        <Link
-                          className="link text-line-clamp-1"
-                          href="/product-detail"
-                        >
-                          {product.title}
-                        </Link>
-                      </div>
-                      <div className="cart-item-bot">
-                        <div className="text-button price">
-                          ${product.price.toFixed(2)}
-                        </div>
-                        <a
-                          className="link text-button"
-                          onClick={() => addProductToCart(product.id, 1, false)}
-                        >
-                          {isAddedToCartProducts(product.id)
-                            ? "Already Added"
-                            : "Add to cart"}
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
           <div className="d-flex flex-column flex-grow-1 h-100">
             <div className="header">
               <h5 className="title">Shopping Cart</h5>
@@ -97,7 +50,7 @@ export default function CartModal() {
                       <div className="tf-mini-cart-items">
                         {cartProducts.map((product, i) => (
                           <div
-                            key={i}
+                            key={product.lineId || i}
                             className="tf-mini-cart-item file-delete"
                           >
                             <div className="tf-mini-cart-image">
@@ -113,7 +66,7 @@ export default function CartModal() {
                               <div className="mb_12 d-flex align-items-center justify-content-between flex-wrap gap-12">
                                 <div className="text-title">
                                   <Link
-                                    href={`/product-detail/${product.id}`}
+                                    href={product.slug ? `/product/${product.slug}` : `/product-detail/${product.id}`}
                                     className="link text-line-clamp-1"
                                   >
                                     {product.title}
@@ -127,10 +80,11 @@ export default function CartModal() {
                                 </div>
                               </div>
                               <div className="d-flex align-items-center justify-content-between flex-wrap gap-12">
-                                <div className="text-secondary-2">XL/Blue</div>
+                                <div className="text-secondary-2">
+                                  {(product.attributes || []).map((a) => a.option).join(" / ")}
+                                </div>
                                 <div className="text-button">
-                                  {product.quantity} X $
-                                  {product.price.toFixed(2)}
+                                  {product.quantity} X {formatPrice(product.price)}
                                 </div>
                               </div>
                             </div>
@@ -141,7 +95,7 @@ export default function CartModal() {
                       <div className="p-4">
                         Your Cart is empty. Start adding favorite products to
                         cart!{" "}
-                        <Link className="btn-line" href="/shop-default-grid">
+                        <Link className="btn-line" href="/shop">
                           Explore Products
                         </Link>
                       </div>
@@ -265,7 +219,7 @@ export default function CartModal() {
                     <div className="tf-cart-totals-discounts">
                       <h5>Subtotal</h5>
                       <h5 className="tf-totals-total-value">
-                        ${totalPrice.toFixed(2)}
+                        {formatPrice(totalPrice)}
                       </h5>
                     </div>
                     <div className="tf-cart-checkbox">
@@ -304,7 +258,7 @@ export default function CartModal() {
                     <div className="text-center">
                       <Link
                         className="link text-btn-uppercase"
-                        href={`/shop-default-grid`}
+                        href={`/shop`}
                       >
                         Or continue shopping
                       </Link>
