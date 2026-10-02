@@ -3,6 +3,7 @@ import Header1 from "@/components/headers/Header1";
 import Topbar from "@/components/headers/Topbar";
 import Hero from "@/components/homes/home-1/Hero";
 import Collections from "@/components/homes/fashion-classyCove/Collections";
+import Collections2 from "@/components/homes/fashion-main/Collections2";
 import Products from "@/components/homes/fashion-chicHaven-02/Products";
 import Products1 from "@/components/homes/sock/Products1";
 import NewsLetter from "@/components/homes/jewelry-02/NewsLetter";
@@ -85,18 +86,15 @@ export default async function HomePage() {
         wooProducts={arrivals.products}
         error={arrivals.error}
       />
-      <Collections
-        className={`hm-collections hm-collections--grid hm-collections--n${universes.length}`}
-        btnClass="tf-btn btn-fill btn-white"
-        btnIcon
+      <Collections2
+        className="hm-universes"
         title="Explorer par univers"
-        subtitle=""
         items={universes.map((b) => ({
           id: b.key,
           imgSrc: b.image,
           alt: b.label,
           title: b.label,
-          desc: `${b.count} produit${b.count > 1 ? "s" : ""}`,
+          description: `${b.count} produit${b.count > 1 ? "s" : ""}`,
           btnText: "Découvrir",
           href: b.href,
         }))}
