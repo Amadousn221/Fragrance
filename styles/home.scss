@@ -245,6 +245,20 @@
   }
 }
 
+// ---------- 03 + 05 Nouveautes et Selection du moment : pleine largeur (memes marges que Homme/Femme/Unisexe) ----------
+.hm-arrivals,
+.hm-featured {
+  > .container {
+    width: 100%;
+    max-width: none;
+    padding-inline: 16px;
+
+    @media (min-width: 768px) {
+      padding-inline: 30px;
+    }
+  }
+}
+
 // ---------- 05 Selection du moment (composant Modave sock/Products1, adapte) ----------
 // Meme traitement visuel que Nouveautes : photos au cadre 3:4, libelles de bouton sans debordement.
 .hm-featured {

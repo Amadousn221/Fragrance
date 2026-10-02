@@ -109,7 +109,7 @@ export default async function HomePage() {
         className="hm-featured"
         parentClass="flat-spacing"
         title="Sélection du moment"
-        subtitle=""
+        subtitle="Nos coups de cœur du moment, choisis pour vous."
         href="/shop"
         linkLabel="VOIR LA BOUTIQUE"
         wooProducts={featured.products}
