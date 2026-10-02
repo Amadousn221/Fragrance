@@ -4,7 +4,6 @@ import Topbar from "@/components/headers/Topbar";
 import Hero from "@/components/homes/home-1/Hero";
 import Collections from "@/components/homes/fashion-classyCove/Collections";
 import Products from "@/components/homes/fashion-chicHaven-02/Products";
-import Banner from "@/components/homes/home-pickleball/Banner";
 import Products1 from "@/components/homes/sock/Products1";
 import NewsLetter from "@/components/homes/jewelry-02/NewsLetter";
 import Features from "@/components/common/Features";
@@ -101,15 +100,6 @@ export default async function HomePage() {
           btnText: "Découvrir",
           href: b.href,
         }))}
-      />
-      <Banner
-        className="hm-brand"
-        imgSrc="/images/banner/banner-shop.jpg"
-        label="NOTRE UNIVERS"
-        title="Une sélection pensée pour votre style."
-        text="Fragrance réunit une sélection de parfums, accessoires et essentiels lifestyle choisis pour leur style et leur caractère."
-        btnText="DÉCOUVRIR LA BOUTIQUE"
-        href="/shop"
       />
       <Products1
         className="hm-featured"

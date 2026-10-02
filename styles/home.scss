@@ -394,63 +394,6 @@
   }
 }
 
-// ---------- 07 Bloc editorial Fragrance (composant Modave home-pickleball/Banner, adapte) ----------
-// Respiration entre deux blocs commerciaux : encart sombre centre sur le visuel de fond.
-.flat-banner-parallax.hm-brand {
-  margin-top: 48px;
-  padding: 40px 0;
-  // Pas de parallaxe : stable sur mobile, et le fond n'est qu'un arriere-plan.
-  background-attachment: scroll;
-
-  @media (min-width: 992px) {
-    margin-top: 72px;
-    padding: 72px 0;
-  }
-
-  .fl-content {
-    padding: 40px 24px;
-    gap: 28px;
-
-    @media (min-width: 768px) {
-      padding: 56px 48px;
-    }
-  }
-
-  .title {
-    font-size: 28px;
-    line-height: 1.2;
-    letter-spacing: 0.04em;
-    margin: 0;
-
-    @media (min-width: 768px) {
-      font-size: 36px;
-    }
-  }
-
-  .title-top > p:first-child {
-    letter-spacing: 0.18em;
-    font-size: 12px;
-  }
-
-  .body-text {
-    max-width: 46ch;
-    margin: 0 auto;
-    line-height: 1.6;
-  }
-
-  .tf-btn {
-    min-height: 48px;
-    letter-spacing: 0.08em;
-    max-width: 100%;
-
-    @media (max-width: 575.98px) {
-      font-size: 13px;
-      letter-spacing: 0.04em;
-      padding-inline: 18px;
-    }
-  }
-}
-
 // ---------- 01 Hero (composant Modave home-1/Hero, adapte) ----------
 // Photo de parfum plein cadre (zone gauche sombre), texte a gauche centre verticalement : sur-titre en capitales espacees
 // avec trait d'accent, titre gras et serre, courte phrase, CTA. Mobile : photo recadree sur le flacon, texte superpose.
