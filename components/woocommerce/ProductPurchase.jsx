@@ -14,6 +14,20 @@ import {
   getVariationAttributes,
 } from "@/lib/woocommerce/variations";
 
+const COLOR_ATTRS = /^(couleur|color|colour)$/i;
+const COLOR_HEX = {
+  "blanc ivoire": "#F4EFE4", ivoire: "#F4EFE4", blanc: "#FFFFFF", noir: "#111111", gris: "#9A9A9A",
+  beige: "#D9C7A8", marron: "#6B4A33", camel: "#B98A55", rouge: "#C0262D", bordeaux: "#6D1A2A",
+  rose: "#E8A5B7", orange: "#E8762C", jaune: "#F2C94C", vert: "#3C8D5A", kaki: "#7A7A4B",
+  bleu: "#2F5FA8", "bleu marine": "#1B2A4A", marine: "#1B2A4A", violet: "#6F4A8E",
+  dore: "#C9A24A", "doré": "#C9A24A", argent: "#C0C0C0", "argenté": "#C0C0C0",
+};
+// Pastille pour l'attribut Couleur ; null (bouton texte) si la teinte est inconnue.
+function getColorSwatch(attrName, option) {
+  if (!COLOR_ATTRS.test(attrName)) return null;
+  return COLOR_HEX[String(option).trim().toLowerCase()] || null;
+}
+
 // Fiche produit WooCommerce dans le design Modave (structure de Details1).
 // Les selecteurs sont generes depuis les attributs WooCommerce (variation: true).
 export default function ProductPurchase({ product }) {
@@ -139,6 +153,7 @@ export default function ProductPurchase({ product }) {
                           {attr.options.map((option) => {
                             const state = getOptionState(product, selection, attr.name, option);
                             const disabled = state !== "ok";
+                            const swatch = getColorSwatch(attr.name, option);
                             const id = `opt-${attr.name}-${option}`.replace(/\s+/g, "-");
                             return (
                               <div key={option}>
@@ -152,19 +167,35 @@ export default function ProductPurchase({ product }) {
                                   onClick={() => !disabled && select(attr.name, option)}
                                   readOnly
                                 />
-                                <label
-                                  className={`style-text size-btn ${disabled ? "type-disable" : ""}`}
-                                  htmlFor={id}
-                                  title={
-                                    state === "outofstock"
-                                      ? "Rupture de stock"
-                                      : state === "impossible"
-                                      ? "Combinaison indisponible"
-                                      : undefined
-                                  }
-                                >
-                                  <span className="text-title">{option}</span>
-                                </label>
+                                {swatch ? (
+                                  <label
+                                    className={`hover-tooltip tooltip-bot radius-60 color-btn ${
+                                      selection[attr.name] === option ? "active" : ""
+                                    } ${disabled ? "type-disable" : ""}`}
+                                    htmlFor={id}
+                                    aria-label={option}
+                                  >
+                                    <span
+                                      className="btn-checkbox"
+                                      style={{ backgroundColor: swatch, boxShadow: "inset 0 0 0 1px rgba(0,0,0,.18)" }}
+                                    />
+                                    <span className="tooltip">{option}</span>
+                                  </label>
+                                ) : (
+                                  <label
+                                    className={`style-text size-btn ${disabled ? "type-disable" : ""}`}
+                                    htmlFor={id}
+                                    title={
+                                      state === "outofstock"
+                                        ? "Rupture de stock"
+                                        : state === "impossible"
+                                        ? "Combinaison indisponible"
+                                        : undefined
+                                    }
+                                  >
+                                    <span className="text-title">{option}</span>
+                                  </label>
+                                )}
                               </div>
                             );
                           })}
@@ -250,9 +281,6 @@ export default function ProductPurchase({ product }) {
               </div>
             </div>
           </div>
-          {product.description && (
-            <div className="mt-5" dangerouslySetInnerHTML={{ __html: product.description }} />
-          )}
         </div>
       </div>
     </section>

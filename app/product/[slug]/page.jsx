@@ -5,6 +5,7 @@ import Topbar6 from "@/components/headers/Topbar6";
 import PageTitle from "@/components/woocommerce/PageTitle";
 import CatalogNotice from "@/components/woocommerce/CatalogNotice";
 import ProductPurchase from "@/components/woocommerce/ProductPurchase";
+import ProductTabs from "@/components/woocommerce/ProductTabs";
 import WooRelatedProducts from "@/components/woocommerce/WooRelatedProducts";
 import { getProductBySlug, getRelatedProducts, isWooConfigured } from "@/lib/woocommerce";
 
@@ -45,6 +46,7 @@ export default async function ProductPage({ params }) {
       ) : (
         <>
           <ProductPurchase product={product} />
+          <ProductTabs product={product} />
           <WooRelatedProducts products={related} />
         </>
       )}
