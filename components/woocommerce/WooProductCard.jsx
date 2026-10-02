@@ -20,6 +20,7 @@ export default function WooProductCard({ product, gridClass = "" }) {
   const sizeAttrs = isVariable
     ? (product.attributes || []).filter((a) => a.variation && !isColorAttribute(a.name) && a.options?.length)
     : [];
+  const sizes = [...new Set(sizeAttrs.flatMap((a) => a.options))];
 
   const addSimple = () =>
     addWooItem({
@@ -40,7 +41,7 @@ export default function WooProductCard({ product, gridClass = "" }) {
     <div
       className={`card-product wow fadeInUp ${gridClass} ${
         product.isOnSale ? "on-sale" : ""
-      }`}
+      } ${sizes.length ? "card-product-size" : ""}`}
     >
       <div className="card-product-wrapper">
         <Link href={href} className="product-img">
@@ -62,6 +63,17 @@ export default function WooProductCard({ product, gridClass = "" }) {
         {product.isOnSale && product.salePercentage && (
           <div className="on-sale-wrap">
             <span className="on-sale-item">-{product.salePercentage}</span>
+          </div>
+        )}
+        {sizes.length > 0 && (
+          <div className="variant-wrap size-list">
+            <ul className="variant-box">
+              {sizes.map((size) => (
+                <li key={size} className="size-item">
+                  {size}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
         <div className="list-product-btn">
@@ -114,11 +126,6 @@ export default function WooProductCard({ product, gridClass = "" }) {
             ))}
           </ul>
         )}
-        {sizeAttrs.map((a) => (
-          <div key={a.name} className="text-caption-1 text-secondary-2 mt-1">
-            {a.name} : {a.options.join(" · ")}
-          </div>
-        ))}
       </div>
     </div>
   );
