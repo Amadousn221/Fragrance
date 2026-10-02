@@ -8,8 +8,8 @@ import Banner from "@/components/homes/home-pickleball/Banner";
 import BannerCollection from "@/components/homes/home-1/BannerCollection";
 import UniverseCollections from "@/components/homes/decor/Collections";
 import Products1 from "@/components/homes/sock/Products1";
-import NewsletterSection from "@/components/home/NewsletterSection";
-import HomeReassurance from "@/components/home/HomeReassurance";
+import NewsLetter from "@/components/homes/jewelry-02/NewsLetter";
+import Features from "@/components/common/Features";
 import { isWooConfigured } from "@/lib/woocommerce";
 import { getHomeCategoryBlocks, getHomeFeatured, getHomeNewArrivals } from "@/lib/woocommerce/home";
 import {
@@ -17,6 +17,7 @@ import {
   HOME_FEATURED_COUNT,
   HOME_FEATURED_MIN,
   HOME_HERO_SLIDES,
+  HOME_REASSURANCE,
   HOME_NEW_ARRIVALS_COUNT,
 } from "@/lib/woocommerce/home-config";
 import "@/styles/home.scss";
@@ -134,8 +135,23 @@ export default async function HomePage() {
         wooProducts={featured.products}
         error={featured.error}
       />
-      <NewsletterSection />
-      <HomeReassurance />
+      <NewsLetter
+        live
+        className="hm-newsletter"
+        title="Rejoignez l'univers Fragrance"
+        text="Nouveautés, sélections et offres directement dans votre boîte mail."
+        placeholder="Votre adresse e-mail"
+        btnLabel="S'INSCRIRE"
+      />
+      <Features
+        className="hm-reassurance"
+        parentClass="flat-spacing-9"
+        items={HOME_REASSURANCE}
+        breakpoints={{
+          0: { slidesPerView: 2, spaceBetween: 12 },
+          768: { slidesPerView: 4, spaceBetween: 15 },
+        }}
+      />
       <Footer1 />
     </>
   );
