@@ -5,14 +5,12 @@ import Hero from "@/components/homes/home-1/Hero";
 import Collections from "@/components/homes/fashion-classyCove/Collections";
 import Products from "@/components/homes/fashion-chicHaven-02/Products";
 import Banner from "@/components/homes/home-pickleball/Banner";
-import BannerCollection from "@/components/homes/home-1/BannerCollection";
 import Products1 from "@/components/homes/sock/Products1";
 import NewsLetter from "@/components/homes/jewelry-02/NewsLetter";
 import Features from "@/components/common/Features";
 import { isWooConfigured } from "@/lib/woocommerce";
 import { getHomeCategoryBlocks, getHomeFeatured, getHomeNewArrivals } from "@/lib/woocommerce/home";
 import {
-  resolveEditorialBlocks,
   HOME_FEATURED_COUNT,
   HOME_FEATURED_MIN,
   HOME_HERO_SLIDES,
@@ -101,18 +99,6 @@ export default async function HomePage() {
           title: b.label,
           desc: `${b.count} produit${b.count > 1 ? "s" : ""}`,
           btnText: "Découvrir",
-          href: b.href,
-        }))}
-      />
-      <BannerCollection
-        className="hm-editorial"
-        items={resolveEditorialBlocks(categoryBlocks.types).map((b) => ({
-          id: b.key,
-          imgSrc: b.image,
-          alt: b.title,
-          title: b.title,
-          desc: b.text,
-          btnText: "DÉCOUVRIR",
           href: b.href,
         }))}
       />
