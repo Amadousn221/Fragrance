@@ -9,7 +9,7 @@
     padding-top: 56px;
   }
 
-  .heading-section-2,
+  .heading-section,
   .tf-sw-collection {
     padding-inline: 16px;
 
@@ -18,9 +18,6 @@
     }
   }
 
-  .heading-section-2 {
-    margin-bottom: 20px;
-  }
 
   // Voile pour garder le texte blanc lisible sur toute image (ou sur le visuel de remplacement).
   .collection-position .img-style {
@@ -425,98 +422,6 @@
   }
 }
 
-// ---------- Hero (composant Modave home-1/Hero, adapte) ----------
-// Image en fond plein cadre, voile sombre pour la lisibilite du texte, contenu en bas a gauche.
-.hm-hero {
-  .wrap-slider {
-    min-height: 520px;
-    height: 78svh;
-    max-height: 640px;
-    background: #cfc4b6;
-
-    @media (min-width: 768px) {
-      min-height: 560px;
-      height: 72vh;
-      max-height: 720px;
-    }
-    @media (min-width: 1200px) {
-      height: 78vh;
-      max-height: 820px;
-    }
-
-    img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.1) 100%);
-      pointer-events: none;
-    }
-  }
-
-  .box-content {
-    z-index: 2;
-    left: 0;
-    right: 0;
-    bottom: 56px;
-    padding: 0 20px;
-
-    @media (min-width: 1200px) {
-      bottom: 96px;
-      padding: 0 calc((100% - 1320px) / 2 + 12px);
-    }
-  }
-
-  .content-slider {
-    max-width: 560px;
-    gap: 24px;
-  }
-
-  .subheading {
-    letter-spacing: 0.18em;
-    font-size: 12px;
-  }
-
-  .heading {
-    font-size: 38px;
-    line-height: 1.1;
-    font-weight: 500;
-
-    @media (min-width: 768px) {
-      font-size: 56px;
-    }
-    @media (min-width: 1200px) {
-      font-size: 72px;
-    }
-  }
-
-  .hero-text {
-    margin-top: 6px;
-    font-size: 16px;
-    line-height: 1.5;
-    max-width: 440px;
-  }
-
-  .tf-btn {
-    min-height: 48px;
-    letter-spacing: 0.08em;
-    max-width: 100%;
-
-    @media (max-width: 575.98px) {
-      font-size: 13px;
-      letter-spacing: 0.04em;
-      padding-inline: 18px;
-    }
-  }
-}
-
 // ---------- 07 Bloc editorial Fragrance (composant Modave home-pickleball/Banner, adapte) ----------
 // Respiration entre deux blocs commerciaux : encart sombre centre sur le visuel de fond.
 .flat-banner-parallax.hm-brand {
@@ -624,5 +529,227 @@
         margin-bottom: 10px;
       }
     }
+  }
+}
+
+// ---------- 01 Hero (composant Modave home-1/Hero, adapte) ----------
+// Photo de parfum plein cadre (zone gauche sombre), texte a gauche centre verticalement : sur-titre en capitales espacees
+// avec trait d'accent, titre gras et serre, courte phrase, CTA. Mobile : photo recadree sur le flacon, texte superpose.
+.hm-hero {
+  .wrap-slider {
+    background: #0a0705;
+  }
+  .wrap-slider picture {
+    display: block;
+    height: 100%;
+  }
+  .wrap-slider img {
+    object-position: 60% 55%;
+  }
+
+  // Texte a gauche, centre verticalement (le visuel paysage laisse la zone gauche sombre).
+  .box-content {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding-inline: clamp(20px, 5.5vw, 80px);
+  }
+  .content-slider {
+    display: block;
+    max-width: 640px;
+  }
+  .box-title-slider {
+    display: block;
+  }
+
+  .subheading {
+    position: relative;
+    margin: 0 0 26px;
+    padding-bottom: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    color: #fff;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 56px;
+      height: 4px;
+      border-radius: 4px;
+      background: #c9a24b; // or du visuel
+    }
+  }
+
+  .heading {
+    margin: 0 0 18px;
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+
+    br {
+      display: none;
+    }
+  }
+
+  .hm-hero__text {
+    margin: 0 0 30px;
+    max-width: 420px;
+    font-size: clamp(16px, 1.5vw, 20px);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .box-btn-slider {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .box-btn-slider .tf-btn {
+    min-height: 0;
+    height: auto;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    .icon {
+      display: none;
+    }
+  }
+
+  .box-btn-slider .hm-hero__outline {
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    background: transparent;
+    color: #fff;
+
+    &:hover {
+      background: #fff;
+      color: var(--main);
+    }
+  }
+
+  // Points de pagination (visibles des qu'il y a plusieurs slides) : contour, actif plein.
+  .sw-dots .swiper-pagination-bullet {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    background: transparent;
+    opacity: 1;
+  }
+  .sw-dots .swiper-pagination-bullet-active {
+    background: #fff;
+  }
+
+  @media (min-width: 992px) {
+    .wrap-slider {
+      height: min(56vw, 720px);
+    }
+  }
+
+  // Mobile : meme principe que la reference. Le visuel paysage (zone gauche sombre, flacon a droite) est
+  // cadre sur le flacon et le texte se superpose a gauche, dans la moitie basse. Texte minimal : sans phrase.
+  @media (max-width: 767.98px) {
+    .wrap-slider {
+      height: 500px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(90deg, rgba(10, 7, 5, 0.7) 0%, rgba(10, 7, 5, 0) 68%);
+        pointer-events: none;
+      }
+    }
+    .wrap-slider img {
+      object-position: 58% 50%;
+    }
+    .box-content {
+      z-index: 2;
+      align-items: center;
+      padding: 56px 20px 0;
+    }
+    .subheading {
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      font-size: 12px;
+      letter-spacing: 0.22em;
+    }
+    .heading {
+      margin-bottom: 26px;
+      font-size: 40px;
+    }
+    .hm-hero__text {
+      display: none;
+    }
+    .box-btn-slider {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .box-btn-slider .tf-btn {
+      min-height: 44px; // cible tactile confortable
+    }
+    .content-slider {
+      max-width: 64%; // le texte reste sur la zone sombre, a gauche du flacon
+    }
+    .heading {
+      font-size: 36px;
+    }
+  }
+}
+
+// ---------- Titres de sections (recupere de main : titre gras centre + trait d'accent dore) ----------
+// Applique aux sections Modave de l'accueil ; place en fin de fichier pour l'emporter sur les reglages par section.
+$hm-accent: #c9a24b;
+
+.hm-collections,
+.hm-arrivals,
+.hm-universes,
+.hm-featured {
+  .heading-section {
+    text-align: center;
+    margin-bottom: 32px;
+
+    @media (min-width: 768px) {
+      margin-bottom: 48px;
+    }
+  }
+
+  .heading-section .heading {
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-transform: none;
+
+    @media (min-width: 768px) {
+      font-size: 40px;
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      width: 64px;
+      height: 6px;
+      margin: 16px auto 0;
+      border-radius: 6px;
+      background: $hm-accent;
+    }
+  }
+
+  .heading-section .subheading {
+    margin: 16px auto 0;
+    max-width: 560px;
   }
 }

@@ -16,11 +16,9 @@ export default function Collections({
   return (
     <section className={`space-30 ${className}`}>
       {title && (
-        <div className="heading-section-2 wow fadeInUp">
-          <div>
-            <h3>{title}</h3>
-            {subtitle && <p className="text-secondary mb-0">{subtitle}</p>}
-          </div>
+        <div className="heading-section text-center wow fadeInUp">
+          <h3 className="heading">{title}</h3>
+          {subtitle && <p className="subheading text-secondary">{subtitle}</p>}
         </div>
       )}
       <Swiper
