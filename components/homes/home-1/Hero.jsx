@@ -20,7 +20,7 @@ export default function Hero({ slides = demoSlides, className = "" }) {
         slidesPerView={1}
         loop={multi}
         modules={[EffectFade, Autoplay, Pagination]}
-        autoplay={multi ? { delay: 3000 } : false}
+        autoplay={multi ? { delay: 6000, pauseOnMouseEnter: true } : false}
         dir="ltr"
         pagination={multi ? { clickable: true, el: ".spd55" } : false}
         className="swiper tf-sw-slideshow"

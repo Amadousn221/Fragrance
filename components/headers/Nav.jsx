@@ -3,46 +3,24 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import useCategories from "@/components/woocommerce/useCategories";
+import { resolveNavItems } from "@/lib/woocommerce/home-config";
 
-// Navigation Fragrance : Accueil, Boutique et categories WooCommerce reelles.
+// Navigation Fragrance : Nouveautés + catégories WooCommerce réellement disponibles.
 export default function Nav() {
   const pathname = usePathname();
-  const categories = useCategories();
-  const inShop = pathname === "/shop" || pathname.startsWith("/category/") || pathname.startsWith("/product/");
+  const items = resolveNavItems(useCategories());
   return (
     <>
-      <li className={`menu-item ${pathname === "/" ? "active" : ""}`}>
-        <Link href="/" className="item-link">
-          Accueil
-        </Link>
-      </li>
-      <li className={`menu-item ${inShop ? "active" : ""}`}>
-        <Link href="/shop" className="item-link">
-          Boutique
-        </Link>
-      </li>
-      {categories.length > 0 && (
-        <li className="menu-item position-relative">
-          <a href="#" className="item-link">
-            Catégories
-            <i className="icon icon-arrow-down" />
-          </a>
-          <div className="sub-menu submenu-default">
-            <ul className="menu-list">
-              {categories.map((c) => (
-                <li
-                  key={c.id}
-                  className={`menu-item-li ${pathname === `/category/${c.slug}` ? "active" : ""}`}
-                >
-                  <Link href={`/category/${c.slug}`} className="menu-link-text">
-                    {c.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+      {items.map((item) => (
+        <li
+          key={item.key}
+          className={`menu-item ${pathname === item.href ? "active" : ""}`}
+        >
+          <Link href={item.href} className="item-link">
+            {item.label}
+          </Link>
         </li>
-      )}
+      ))}
     </>
   );
 }
