@@ -1,10 +1,11 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
-import { slides } from "@/data/heroSlides";
+import { slides as demoSlides } from "@/data/heroSlides";
 
 import Link from "next/link";
-export default function Hero() {
+// `slides` : contenu du Hero (par defaut les slides du template, utilises par les pages demo).
+export default function Hero({ slides = demoSlides }) {
   return (
     <section className="tf-slideshow slider-default slider-effect-fade">
       <Swiper
