@@ -38,7 +38,10 @@ export default async function HomePage() {
     configured
       ? getHomeNewArrivals(HOME_NEW_ARRIVALS_COUNT).then(
           (products) => ({ products }),
-          () => ({ products: [], error: UNAVAILABLE })
+          (e) => {
+            console.error("[accueil] Nouveautés indisponibles :", e?.message);
+            return { products: [], error: UNAVAILABLE };
+          }
         )
       : Promise.resolve({ products: [], error: "Catalogue non connecté." }),
   ]);
@@ -49,7 +52,10 @@ export default async function HomePage() {
         exclude: arrivals.products.map((p) => p.id),
       }).then(
         (r) => ({ products: r.products }),
-        () => ({ products: [], error: UNAVAILABLE })
+        (e) => {
+          console.error("[accueil] Sélection indisponible :", e?.message);
+          return { products: [], error: UNAVAILABLE };
+        }
       )
     : { products: [] };
 
