@@ -1,10 +1,12 @@
 "use client";
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import QuantitySelect from "@/components/productDetails/QuantitySelect";
 import ProductGallery from "./ProductGallery";
 import { useContextElement } from "@/context/Context";
 import { formatPrice } from "@/lib/format";
+import { VENDOR_NAME, DELIVERY_ESTIMATE, RETURN_NOTE, STORE_INFO } from "@/lib/woocommerce/product-info-config";
 import { wishlistEntry } from "@/lib/woocommerce/wishlist";
 import {
   findVariation,
@@ -34,6 +36,7 @@ export default function ProductPurchase({ product }) {
   const { addWooItem, toggleWishlist, isAddedtoWishlist } = useContextElement();
   const variationAttrs = useMemo(() => getVariationAttributes(product), [product]);
   const staticAttrs = useMemo(() => getStaticAttributes(product), [product]);
+  const router = useRouter();
   const isVariable = product.type === "variable";
 
   const [selection, setSelection] = useState({});
@@ -66,9 +69,7 @@ export default function ProductPurchase({ product }) {
   const select = (name, option) =>
     setSelection((s) => ({ ...s, [name]: s[name] === option ? undefined : option }));
 
-  const handleAdd = () => {
-    if (!canAdd) return;
-    addWooItem({
+  const buildItem = () => ({
       product_id: product.id,
       variation_id: variation ? variation.id : null,
       slug: product.slug,
@@ -80,7 +81,32 @@ export default function ProductPurchase({ product }) {
       image: variation?.image?.src || product.imgSrc,
       sku: variation?.sku || product.sku,
       attributes: variation ? variation.attributes : [],
-    });
+  });
+
+  const handleAdd = () => {
+    if (canAdd) addWooItem(buildItem());
+  };
+
+  const handleBuyNow = () => {
+    if (!canAdd) return;
+    addWooItem(buildItem());
+    router.push("/checkout");
+  };
+
+  const showTab = (id) => {
+    window.dispatchEvent(new CustomEvent("product-tab", { detail: id }));
+    document.getElementById("product-tabs")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) await navigator.share({ title: product.title, url });
+      else {
+        await navigator.clipboard.writeText(url);
+        window.alert("Lien copié.");
+      }
+    } catch {}
   };
 
   const stockText = !ready
@@ -236,6 +262,79 @@ export default function ProductPurchase({ product }) {
                           </span>
                         </a>
                       </div>
+                      <button
+                        type="button"
+                        onClick={handleBuyNow}
+                        disabled={!canAdd}
+                        className="btn-style-3 text-btn-uppercase w-100"
+                        style={canAdd ? undefined : { opacity: 0.6, cursor: "not-allowed" }}
+                      >
+                        Acheter maintenant
+                      </button>
+                    </div>
+
+                    <div className="tf-product-info-help">
+                      <div className="tf-product-info-extra-link">
+                        <a href="#product-tabs" onClick={(e) => { e.preventDefault(); showTab(3); }} className="tf-product-extra-icon">
+                          <div className="icon">
+                            <i className="icon-shipping" />
+                          </div>
+                          <p className="text-caption-1">Livraison &amp; retours</p>
+                        </a>
+                        <Link href="/contact" className="tf-product-extra-icon">
+                          <div className="icon">
+                            <i className="icon-question" />
+                          </div>
+                          <p className="text-caption-1">Poser une question</p>
+                        </Link>
+                        <a href="#" onClick={(e) => { e.preventDefault(); handleShare(); }} className="tf-product-extra-icon">
+                          <div className="icon">
+                            <i className="icon-share" />
+                          </div>
+                          <p className="text-caption-1">Partager</p>
+                        </a>
+                      </div>
+                      <div className="tf-product-info-time">
+                        <div className="icon">
+                          <i className="icon-timer" />
+                        </div>
+                        <p className="text-caption-1">{DELIVERY_ESTIMATE}</p>
+                      </div>
+                      <div className="tf-product-info-return">
+                        <div className="icon">
+                          <i className="icon-arrowClockwise" />
+                        </div>
+                        <p className="text-caption-1">{RETURN_NOTE}</p>
+                      </div>
+                      {STORE_INFO.address.length > 0 && (
+                        <div className="dropdown dropdown-store-location">
+                          <div className="dropdown-title dropdown-backdrop" data-bs-toggle="dropdown" aria-haspopup="true">
+                            <div className="tf-product-info-view link">
+                              <div className="icon">
+                                <i className="icon-map-pin" />
+                              </div>
+                              <span>Voir les informations de la boutique</span>
+                            </div>
+                          </div>
+                          <div className="dropdown-menu dropdown-menu-end">
+                            <div className="dropdown-content">
+                              <div className="dropdown-content-heading">
+                                <h5>Notre boutique</h5>
+                              </div>
+                              <div className="line-bt" />
+                              <div>
+                                <h6>{STORE_INFO.name}</h6>
+                                {STORE_INFO.pickup && <p>{STORE_INFO.pickup}</p>}
+                              </div>
+                              <div>
+                                {STORE_INFO.address.map((l) => (
+                                  <p key={l}>{l}</p>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {staticAttrs.length > 0 && (
@@ -257,6 +356,10 @@ export default function ProductPurchase({ product }) {
                         </li>
                       )}
                       <li>
+                        <p className="text-caption-1">Vendeur :</p>
+                        <p className="text-caption-1 text-1">{VENDOR_NAME}</p>
+                      </li>
+                      <li>
                         <p className="text-caption-1">Disponibilité :</p>
                         <p className="text-caption-1 text-1">{stockText}</p>
                       </li>
@@ -276,6 +379,14 @@ export default function ProductPurchase({ product }) {
                         </li>
                       )}
                     </ul>
+                    <div className="tf-product-info-guranteed">
+                      <div className="text-title">Paiement 100 % sécurisé :</div>
+                      <div className="tf-payment">
+                        {[1, 2, 3, 4, 5, 6].map((n) => (
+                          <img key={n} alt="" src={`/images/payment/img-${n}.png`} width={100} height={64} />
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

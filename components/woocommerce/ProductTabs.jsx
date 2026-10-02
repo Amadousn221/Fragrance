@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ProductReviews from "./ProductReviews";
 import { SHIPPING_SECTIONS, RETURN_SECTIONS } from "@/lib/woocommerce/product-info-config";
 
 function Sections({ sections }) {
@@ -25,8 +26,14 @@ function Sections({ sections }) {
 }
 
 // Onglets de la fiche produit (style du theme Modave) : description WooCommerce, avis, livraison et retours.
-export default function ProductTabs({ product }) {
+export default function ProductTabs({ product, reviews = [] }) {
   const [activeTab, setActiveTab] = useState(1);
+  // Permet à la fiche d'ouvrir un onglet (ex. « Livraison & retours »).
+  useEffect(() => {
+    const open = (e) => setActiveTab(Number(e.detail) || 1);
+    window.addEventListener("product-tab", open);
+    return () => window.removeEventListener("product-tab", open);
+  }, []);
   const details = [
     ...(product.sku ? [{ label: "SKU", value: product.sku }] : []),
     ...product.attributes.filter((a) => a.options?.length).map((a) => ({ label: a.name, value: a.options.join(", ") })),
@@ -40,7 +47,7 @@ export default function ProductTabs({ product }) {
   const pane = (id) => `widget-content-inner ${activeTab === id ? "active" : ""}`;
 
   return (
-    <section className="flat-spacing-1">
+    <section className="flat-spacing-1" id="product-tabs">
       <div className="container">
         <div className="widget-tabs style-1">
           <ul className="widget-menu-tab">
@@ -76,7 +83,9 @@ export default function ProductTabs({ product }) {
               </div>
             </div>
             <div className={pane(2)}>
-              <p className="text-secondary">Aucun avis pour le moment.</p>
+              <div className="tab-reviews write-cancel-review-wrap">
+                <ProductReviews productId={product.id} reviews={reviews} />
+              </div>
             </div>
             <div className={pane(3)}>
               <div className="tab-shipping">

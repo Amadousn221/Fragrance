@@ -7,6 +7,7 @@ import CatalogNotice from "@/components/woocommerce/CatalogNotice";
 import ProductPurchase from "@/components/woocommerce/ProductPurchase";
 import ProductTabs from "@/components/woocommerce/ProductTabs";
 import WooRelatedProducts from "@/components/woocommerce/WooRelatedProducts";
+import { getProductReviews } from "@/lib/woocommerce/reviews";
 import { getProductBySlug, getRelatedProducts, isWooConfigured } from "@/lib/woocommerce";
 
 export const revalidate = 300;
@@ -18,7 +19,8 @@ async function load(slug) {
     if (!product) return { missing: true };
     // Les produits lies ne doivent jamais empecher l'affichage de la fiche.
     const related = await getRelatedProducts(product).catch(() => []);
-    return { product, related };
+    const reviews = await getProductReviews(product.id).catch(() => []);
+    return { product, related, reviews };
   } catch {
     return { error: "Le catalogue est momentanément indisponible." };
   }
@@ -33,7 +35,7 @@ export async function generateMetadata({ params }) {
 // Le serveur charge le produit ; ProductPurchase (client) gere la selection de variations.
 export default async function ProductPage({ params }) {
   const { slug } = await params;
-  const { product, related, error, missing } = await load(slug);
+  const { product, related, reviews, error, missing } = await load(slug);
   if (missing) notFound();
 
   return (
@@ -46,7 +48,7 @@ export default async function ProductPage({ params }) {
       ) : (
         <>
           <ProductPurchase product={product} />
-          <ProductTabs product={product} />
+          <ProductTabs product={product} reviews={reviews} />
           <WooRelatedProducts products={related} />
         </>
       )}
