@@ -7,6 +7,7 @@ import ProductGallery from "./ProductGallery";
 import { useContextElement } from "@/context/Context";
 import { formatPrice } from "@/lib/format";
 import { VENDOR_NAME, DELIVERY_ESTIMATE, RETURN_NOTE, STORE_INFO } from "@/lib/woocommerce/product-info-config";
+import { getColorSwatch } from "@/lib/woocommerce/colors";
 import { wishlistEntry } from "@/lib/woocommerce/wishlist";
 import {
   findVariation,
@@ -15,20 +16,6 @@ import {
   getStaticAttributes,
   getVariationAttributes,
 } from "@/lib/woocommerce/variations";
-
-const COLOR_ATTRS = /^(couleur|color|colour)$/i;
-const COLOR_HEX = {
-  "blanc ivoire": "#F4EFE4", ivoire: "#F4EFE4", blanc: "#FFFFFF", noir: "#111111", gris: "#9A9A9A",
-  beige: "#D9C7A8", marron: "#6B4A33", camel: "#B98A55", rouge: "#C0262D", bordeaux: "#6D1A2A",
-  rose: "#E8A5B7", orange: "#E8762C", jaune: "#F2C94C", vert: "#3C8D5A", kaki: "#7A7A4B",
-  bleu: "#2F5FA8", "bleu marine": "#1B2A4A", marine: "#1B2A4A", violet: "#6F4A8E",
-  dore: "#C9A24A", "doré": "#C9A24A", argent: "#C0C0C0", "argenté": "#C0C0C0",
-};
-// Pastille pour l'attribut Couleur ; null (bouton texte) si la teinte est inconnue.
-function getColorSwatch(attrName, option) {
-  if (!COLOR_ATTRS.test(attrName)) return null;
-  return COLOR_HEX[String(option).trim().toLowerCase()] || null;
-}
 
 // Fiche produit WooCommerce dans le design Modave (structure de Details1).
 // Les selecteurs sont generes depuis les attributs WooCommerce (variation: true).

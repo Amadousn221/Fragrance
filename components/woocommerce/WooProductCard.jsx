@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useContextElement } from "@/context/Context";
 import { formatPrice } from "@/lib/format";
 import { wishlistEntry } from "@/lib/woocommerce/wishlist";
+import { getColorSwatch, isColorAttribute } from "@/lib/woocommerce/colors";
 
 // Carte produit Modave (memes classes que ProductCard1) alimentee par un produit WooCommerce normalise.
 // Liens vers /product/[slug] ; prix en F CFA ; panier = lignes WooCommerce.
@@ -10,6 +11,15 @@ export default function WooProductCard({ product, gridClass = "" }) {
   const { addWooItem, toggleWishlist, isAddedtoWishlist } = useContextElement();
   const href = `/product/${product.slug}`;
   const isVariable = product.type === "variable";
+
+  // Variations visibles sur la carte : pastilles de couleur + choix de taille/pointure.
+  const colorAttr = (product.attributes || []).find((a) => isColorAttribute(a.name) && a.options?.length);
+  const swatches = (colorAttr?.options || [])
+    .map((option) => ({ option, hex: getColorSwatch(colorAttr.name, option) }))
+    .filter((s) => s.hex);
+  const sizeAttrs = isVariable
+    ? (product.attributes || []).filter((a) => a.variation && !isColorAttribute(a.name) && a.options?.length)
+    : [];
 
   const addSimple = () =>
     addWooItem({
@@ -91,6 +101,24 @@ export default function WooProductCard({ product, gridClass = "" }) {
           )}{" "}
           {formatPrice(product.price)}
         </span>
+        {swatches.length > 0 && (
+          <ul className="list-color-product" aria-label="Couleurs disponibles">
+            {swatches.map((s) => (
+              <li key={s.option} className="list-color-item hover-tooltip tooltip-bot">
+                <span className="tooltip color-filter">{s.option}</span>
+                <span
+                  className="swatch-value"
+                  style={{ backgroundColor: s.hex, boxShadow: "inset 0 0 0 1px rgba(0,0,0,.18)" }}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+        {sizeAttrs.map((a) => (
+          <div key={a.name} className="text-caption-1 text-secondary-2 mt-1">
+            {a.name} : {a.options.join(" · ")}
+          </div>
+        ))}
       </div>
     </div>
   );
