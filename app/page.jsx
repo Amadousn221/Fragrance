@@ -6,7 +6,6 @@ import Collections from "@/components/homes/fashion-classyCove/Collections";
 import Products from "@/components/homes/fashion-chicHaven-02/Products";
 import Banner from "@/components/homes/home-pickleball/Banner";
 import BannerCollection from "@/components/homes/home-1/BannerCollection";
-import UniverseCollections from "@/components/homes/decor/Collections";
 import Products1 from "@/components/homes/sock/Products1";
 import NewsLetter from "@/components/homes/jewelry-02/NewsLetter";
 import Features from "@/components/common/Features";
@@ -86,23 +85,19 @@ export default async function HomePage() {
         wooProducts={arrivals.products}
         error={arrivals.error}
       />
-      <UniverseCollections
-        className="hm-universes"
-        containerClass="container"
+      <Collections
+        className="hm-collections hm-collections--grid"
+        btnClass="tf-btn btn-fill btn-white"
+        btnIcon
         title="Explorer par univers"
         subtitle=""
-        breakpoints={{
-          0: { slidesPerView: 1.25, spaceBetween: 12 },
-          576: { slidesPerView: 2.2, spaceBetween: 14 },
-          992: { slidesPerView: 3.25, spaceBetween: 16 },
-          1280: { slidesPerView: 4.2, spaceBetween: 20 },
-        }}
         items={categoryBlocks.types.map((b) => ({
           id: b.key,
           imgSrc: b.image,
           alt: b.label,
           title: b.label,
-          productCount: "Découvrir",
+          desc: `${b.count} produit${b.count > 1 ? "s" : ""}`,
+          btnText: "Découvrir",
           href: b.href,
         }))}
       />
