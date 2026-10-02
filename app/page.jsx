@@ -17,6 +17,7 @@ import {
   HOME_FEATURED_MIN,
   HOME_HERO_SLIDES,
   HOME_REASSURANCE,
+  HOME_UNIVERSE_KEYS,
   HOME_NEW_ARRIVALS_COUNT,
 } from "@/lib/woocommerce/home-config";
 import "@/styles/home.scss";
@@ -54,6 +55,8 @@ export default async function HomePage() {
       )
     : { products: [] };
 
+  const universes = categoryBlocks.types.filter((b) => HOME_UNIVERSE_KEYS.includes(b.key));
+
   return (
     <>
       <Topbar />
@@ -86,12 +89,12 @@ export default async function HomePage() {
         error={arrivals.error}
       />
       <Collections
-        className="hm-collections hm-collections--grid"
+        className={`hm-collections hm-collections--grid hm-collections--n${universes.length}`}
         btnClass="tf-btn btn-fill btn-white"
         btnIcon
         title="Explorer par univers"
         subtitle=""
-        items={categoryBlocks.types.map((b) => ({
+        items={universes.map((b) => ({
           id: b.key,
           imgSrc: b.image,
           alt: b.label,

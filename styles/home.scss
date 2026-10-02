@@ -220,6 +220,29 @@
     margin: 0 !important;
   }
 
+  // 4 univers : 2 x 2 puis 4 colonnes en grand ecran ; 2 univers : 2 colonnes (jamais de colonne orpheline).
+  &.hm-collections--n4 .tf-sw-collection .swiper-wrapper {
+    @media (min-width: 992px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    @media (min-width: 1200px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  // 2 x 2 en largeur moyenne : cartes plus basses pour ne pas allonger la page.
+  &.hm-collections--n4 .collection-position .img-style img {
+    @media (min-width: 992px) and (max-width: 1199.98px) {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  &.hm-collections--n2 .tf-sw-collection .swiper-wrapper {
+    @media (min-width: 576px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   .collection-position .img-style img {
     @media (min-width: 576px) and (max-width: 991.98px) {
       aspect-ratio: 4 / 3;
