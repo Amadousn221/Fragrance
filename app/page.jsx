@@ -5,19 +5,17 @@ import Hero from "@/components/homes/home-1/Hero";
 import Collections from "@/components/homes/fashion-classyCove/Collections";
 import Products from "@/components/homes/fashion-chicHaven-02/Products";
 import Banner from "@/components/homes/home-pickleball/Banner";
-import BannerCollection from "@/components/homes/home-1/BannerCollection";
-import UniverseCollections from "@/components/homes/decor/Collections";
 import Products1 from "@/components/homes/sock/Products1";
 import NewsLetter from "@/components/homes/jewelry-02/NewsLetter";
 import Features from "@/components/common/Features";
 import { isWooConfigured } from "@/lib/woocommerce";
 import { getHomeCategoryBlocks, getHomeFeatured, getHomeNewArrivals } from "@/lib/woocommerce/home";
 import {
-  resolveEditorialBlocks,
   HOME_FEATURED_COUNT,
   HOME_FEATURED_MIN,
   HOME_HERO_SLIDES,
   HOME_REASSURANCE,
+  HOME_UNIVERSE_KEYS,
   HOME_NEW_ARRIVALS_COUNT,
 } from "@/lib/woocommerce/home-config";
 import "@/styles/home.scss";
@@ -55,6 +53,8 @@ export default async function HomePage() {
       )
     : { products: [] };
 
+  const universes = categoryBlocks.types.filter((b) => HOME_UNIVERSE_KEYS.includes(b.key));
+
   return (
     <>
       <Topbar />
@@ -62,6 +62,8 @@ export default async function HomePage() {
       <Hero slides={HOME_HERO_SLIDES} className="hm-hero" />
       <Collections
         className="hm-collections"
+        btnClass="tf-btn btn-fill btn-white"
+        btnIcon
         title="Pour lui, pour elle"
         subtitle="Choisissez votre univers."
         items={categoryBlocks.audiences.map((b) => ({
@@ -84,35 +86,19 @@ export default async function HomePage() {
         wooProducts={arrivals.products}
         error={arrivals.error}
       />
-      <UniverseCollections
-        className="hm-universes"
-        containerClass="container"
+      <Collections
+        className={`hm-collections hm-collections--grid hm-collections--n${universes.length}`}
+        btnClass="tf-btn btn-fill btn-white"
+        btnIcon
         title="Explorer par univers"
         subtitle=""
-        breakpoints={{
-          0: { slidesPerView: 1.25, spaceBetween: 12 },
-          576: { slidesPerView: 2.2, spaceBetween: 14 },
-          992: { slidesPerView: 3.25, spaceBetween: 16 },
-          1280: { slidesPerView: 4.2, spaceBetween: 20 },
-        }}
-        items={categoryBlocks.types.map((b) => ({
+        items={universes.map((b) => ({
           id: b.key,
           imgSrc: b.image,
           alt: b.label,
           title: b.label,
-          productCount: "Découvrir",
-          href: b.href,
-        }))}
-      />
-      <BannerCollection
-        className="hm-editorial"
-        items={resolveEditorialBlocks(categoryBlocks.types).map((b) => ({
-          id: b.key,
-          imgSrc: b.image,
-          alt: b.title,
-          title: b.title,
-          desc: b.text,
-          btnText: "DÉCOUVRIR",
+          desc: `${b.count} produit${b.count > 1 ? "s" : ""}`,
+          btnText: "Découvrir",
           href: b.href,
         }))}
       />

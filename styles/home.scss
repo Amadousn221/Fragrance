@@ -33,12 +33,85 @@
     }
   }
 
+  // Cartes arrondies, texte en bas a gauche (titre gras, phrase, bouton arrondi avec fleche).
+  .collection-position {
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
   .collection-position .img-style img {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 4 / 3; // mobile : cartes larges, une par ligne
+    height: auto;
+
+    @media (min-width: 768px) {
+      aspect-ratio: 4 / 5;
+    }
   }
 
   .collection-position .content {
     z-index: 2;
+    top: auto;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    transform: none;
+    text-align: left;
+    justify-items: start;
+    gap: 6px;
+
+    @media (min-width: 768px) {
+      bottom: 28px;
+      left: 28px;
+      right: 28px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-transform: none;
+
+      @media (min-width: 768px) {
+        font-size: 34px;
+      }
+    }
+
+    .desc {
+      margin: 0 0 8px;
+      font-size: 15px;
+      text-transform: none;
+    }
+
+    .tf-btn {
+      min-height: 44px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      background: #c9a24b;
+      color: var(--main);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+
+      &:hover {
+        background: #fff;
+      }
+    }
+  }
+
+  // Mobile : cartes empilees (une par ligne) au lieu d'un defilement horizontal.
+  @media (max-width: 767.98px) {
+    .tf-sw-collection .swiper-wrapper {
+      display: block;
+      transform: none !important;
+    }
+
+    .tf-sw-collection .swiper-slide {
+      width: 100% !important;
+      margin: 0 0 12px !important;
+    }
   }
 }
 
@@ -123,157 +196,56 @@
   }
 }
 
-// ---------- 04 Explorer par univers (composant Modave decor/Collections, adapte) ----------
-// Grandes cartes portrait, libelle + "Decouvrir" en bas sur un voile leger ; la carte suivante reste visible.
-.hm-universes {
-  background: var(--surface);
+// ---------- 04 Explorer par univers : meme composant et memes cartes que Homme / Femme / Unisexe, en grille ----------
+// Pas de slider : les cartes sont toutes visibles (1 par ligne en mobile, 2 en tablette, 3 sur desktop).
+.hm-collections--grid {
+  .tf-sw-collection .swiper-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    transform: none !important;
 
-  .heading-section {
-    margin-bottom: 28px;
-
-    @media (min-width: 768px) {
-      margin-bottom: 40px;
+    @media (min-width: 576px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    @media (min-width: 992px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
     }
   }
 
-  .heading-section .heading {
-    font-size: 28px;
-    text-transform: none;
-
-    @media (min-width: 768px) {
-      font-size: 36px;
-    }
+  .tf-sw-collection .swiper-slide {
+    width: auto !important;
+    margin: 0 !important;
   }
 
-  .collection-position-2 {
-    border-radius: 4px;
-    background: var(--line);
-
-    .img-style img {
-      aspect-ratio: 4 / 5;
-      height: auto;
+  // 4 univers : 2 x 2 puis 4 colonnes en grand ecran ; 2 univers : 2 colonnes (jamais de colonne orpheline).
+  &.hm-collections--n4 .tf-sw-collection .swiper-wrapper {
+    @media (min-width: 992px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
-    .img-style::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 45%);
-      pointer-events: none;
-    }
-
-    // Surcharge du style-7 (texte en haut, centre) : une ligne en bas, titre a gauche, action a droite.
-    &.style-7 .content {
-      top: auto;
-      bottom: 16px !important;
-      left: 16px;
-      right: 16px;
-      transform: none;
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      text-align: left;
-      z-index: 2;
-    }
-
-    .title {
-      margin: 0;
-      font-size: 15px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-
-      @media (min-width: 768px) {
-        font-size: 17px;
-      }
-    }
-
-    .text-title {
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border-bottom: 1px solid currentColor;
-      padding-bottom: 2px;
-      white-space: nowrap;
-    }
-  }
-}
-
-// ---------- 06 Blocs editoriaux (composant Modave home-1/BannerCollection, adapte) ----------
-// Grande image, voile de contraste, titre + phrase courte + CTA en bas a gauche. Coins legerement arrondis (.radius).
-.hm-editorial {
-  padding-top: 48px;
-
-  @media (min-width: 992px) {
-    padding-top: 72px;
-  }
-
-  .tf-grid-layout {
-    row-gap: 16px;
-    column-gap: 16px;
-
     @media (min-width: 1200px) {
-      column-gap: 24px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 
-  .collection-position {
-    background: var(--line);
-
-    .img-style img {
-      aspect-ratio: 4 / 5;
-      height: auto;
-
-      @media (min-width: 576px) and (max-width: 991.98px) {
-        aspect-ratio: 16 / 10;
-      }
+  // 2 x 2 en largeur moyenne : cartes plus basses pour ne pas allonger la page.
+  &.hm-collections--n4 .collection-position .img-style img {
+    @media (min-width: 992px) and (max-width: 1199.98px) {
+      aspect-ratio: 4 / 3;
     }
+  }
 
-    .img-style::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.12) 65%);
-      pointer-events: none;
+  &.hm-collections--n2 .tf-sw-collection .swiper-wrapper {
+    @media (min-width: 576px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
 
-    .content {
-      z-index: 2;
-      top: auto;
-      bottom: 24px;
-      left: 24px;
-      right: 24px;
-      transform: none;
-      text-align: left;
-      justify-items: start;
-      gap: 10px;
-
-      @media (min-width: 1200px) {
-        bottom: 32px;
-        left: 32px;
-        right: 32px;
-      }
-    }
-
-    .title {
-      margin: 0;
-      font-size: 26px;
-      line-height: 1.15;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .desc {
-      margin: 0;
-      max-width: 28ch;
-      font-size: 15px;
-      line-height: 1.45;
-    }
-
-    .btn-line {
-      margin-top: 6px;
-      font-size: 13px;
-      letter-spacing: 0.12em;
+  .collection-position .img-style img {
+    @media (min-width: 576px) and (max-width: 991.98px) {
+      aspect-ratio: 4 / 3;
     }
   }
 }
@@ -479,59 +451,6 @@
   }
 }
 
-// ---------- 11 Pied de page (composant Modave footers/Footer1, adapte) ----------
-// Nom de marque en texte (identique a l'en-tete) ; colonnes aerees sur desktop, accordeons sur mobile (theme).
-.hm-footer {
-  .footer-body {
-    padding-top: 56px;
-    padding-bottom: 40px;
-
-    @media (min-width: 992px) {
-      padding-top: 80px;
-      padding-bottom: 64px;
-    }
-  }
-
-  .hm-footer__brand {
-    font-size: 22px;
-    letter-spacing: 0.22em;
-    color: var(--main);
-  }
-
-  &.bg-main .hm-footer__brand {
-    color: #fff;
-  }
-
-  .footer-heading {
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-
-  .footer-menu .footer-menu-list {
-    gap: 10px;
-  }
-
-  @media (min-width: 992px) {
-    .footer-menu {
-      gap: 96px;
-    }
-
-    // Longue liste (navigation + categories) sur deux colonnes pour ne pas allonger le pied de page.
-    .footer-menu .hm-footer__list--wide {
-      display: block;
-      column-count: 2;
-      column-gap: 64px;
-      min-width: 340px;
-
-      li {
-        break-inside: avoid;
-        margin-bottom: 10px;
-      }
-    }
-  }
-}
-
 // ---------- 01 Hero (composant Modave home-1/Hero, adapte) ----------
 // Photo de parfum plein cadre (zone gauche sombre), texte a gauche centre verticalement : sur-titre en capitales espacees
 // avec trait d'accent, titre gras et serre, courte phrase, CTA. Mobile : photo recadree sur le flacon, texte superpose.
@@ -715,7 +634,6 @@ $hm-accent: #c9a24b;
 
 .hm-collections,
 .hm-arrivals,
-.hm-universes,
 .hm-featured {
   .heading-section {
     text-align: center;
