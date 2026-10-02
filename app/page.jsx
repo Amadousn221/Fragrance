@@ -55,7 +55,7 @@ export default async function HomePage() {
     <>
       <Topbar />
       <Header1 />
-      <Hero slides={HOME_HERO_SLIDES} />
+      <Hero slides={HOME_HERO_SLIDES} className="hm-hero" />
       <HomeAudienceCategories blocks={categoryBlocks.audiences} />
       <HomeNewArrivals {...arrivals} />
       <HomeTypeSlider blocks={categoryBlocks.types} />

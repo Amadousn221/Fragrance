@@ -480,3 +480,156 @@
     font-size: 14px;
   }
 }
+
+// ---------- 01 Hero : visuel paysage (desktop) / portrait (mobile) ----------
+// Typo et details inspires d'une reference : sur-titre en capitales tres espacees avec petit trait d'accent,
+// gros titre gras et serre, courte phrase, deux boutons (plein + contour), texte a gauche.
+.hm-hero {
+  .wrap-slider {
+    background: #0a0705;
+  }
+  .wrap-slider picture {
+    display: block;
+    height: 100%;
+  }
+  .wrap-slider img {
+    object-position: 60% 55%;
+  }
+
+  // Texte a gauche, centre verticalement (le visuel paysage laisse la zone gauche sombre).
+  .box-content {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding-inline: clamp(20px, 5.5vw, 80px);
+  }
+  .content-slider {
+    display: block;
+    max-width: 560px;
+  }
+  .box-title-slider {
+    display: block;
+  }
+
+  .subheading {
+    position: relative;
+    margin: 0 0 26px;
+    padding-bottom: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    color: #fff;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 56px;
+      height: 4px;
+      border-radius: 4px;
+      background: #c9a24b; // or du visuel
+    }
+  }
+
+  .heading {
+    margin: 0 0 18px;
+    font-size: clamp(44px, 6.4vw, 92px);
+    line-height: 1.02;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+
+    br {
+      display: none;
+    }
+  }
+
+  .hm-hero__text {
+    margin: 0 0 30px;
+    max-width: 420px;
+    font-size: clamp(16px, 1.5vw, 20px);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .box-btn-slider {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .box-btn-slider .tf-btn {
+    padding: 18px 30px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+
+    .icon {
+      display: none;
+    }
+  }
+
+  .box-btn-slider .hm-hero__outline {
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    background: transparent;
+    color: #fff;
+
+    &:hover {
+      background: #fff;
+      color: var(--main);
+    }
+  }
+
+  // Points de pagination (visibles des qu'il y a plusieurs slides) : contour, actif plein.
+  .sw-dots .swiper-pagination-bullet {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    background: transparent;
+    opacity: 1;
+  }
+  .sw-dots .swiper-pagination-bullet-active {
+    background: #fff;
+  }
+
+  @media (min-width: 992px) {
+    .wrap-slider {
+      height: min(56vw, 720px);
+    }
+  }
+
+  // Mobile : le visuel portrait en haut, le texte repose sur une zone sombre juste en dessous.
+  @media (max-width: 767.98px) {
+    .wrap-slider {
+      height: auto;
+      padding-bottom: 40px;
+    }
+    .wrap-slider picture {
+      height: auto;
+      aspect-ratio: 941 / 1250;
+    }
+    .wrap-slider img {
+      object-position: 50% 0;
+      -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent);
+      mask-image: linear-gradient(to bottom, #000 88%, transparent);
+    }
+    .box-content {
+      position: relative;
+      display: block;
+      margin-top: -28px;
+      padding-inline: 20px;
+    }
+    .heading {
+      font-size: 44px;
+    }
+    .box-btn-slider {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+}
