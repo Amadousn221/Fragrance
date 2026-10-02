@@ -10,7 +10,7 @@ export default function HomeTypeSlider({ blocks }) {
   return (
     <section className="hm-section hm-section--tint">
       <div className="container">
-        <SectionHeading title="Explorer par univers" />
+        <SectionHeading title="Explorer par univers" highlight="univers" />
         <ScrollRow label="Explorer par univers" nav={blocks.length > 3}>
           {blocks.map((b) => (
             <div key={b.key} className="hm-type__item" role="listitem">

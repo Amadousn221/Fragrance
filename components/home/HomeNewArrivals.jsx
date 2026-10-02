@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SectionHeading from "./SectionHeading";
 import CatalogNotice from "@/components/woocommerce/CatalogNotice";
 import WooProductCard from "@/components/woocommerce/WooProductCard";
@@ -8,12 +9,7 @@ export default function HomeNewArrivals({ products, error }) {
   return (
     <section className="hm-section">
       <div className="container">
-        <SectionHeading
-          title="Nouveautés"
-          subtitle="Les dernières arrivées en boutique."
-          href="/shop"
-          linkLabel="Voir tout"
-        />
+        <SectionHeading title="Les nouveautés" highlight="nouveautés" subtitle="Les dernières arrivées en boutique." />
         {error ? (
           <CatalogNotice>{error}</CatalogNotice>
         ) : products.length ? (
@@ -27,6 +23,11 @@ export default function HomeNewArrivals({ products, error }) {
         ) : (
           <p className="text-center">Aucun produit pour le moment.</p>
         )}
+        <div className="hm-more">
+          <Link href="/shop" className="hm-link">
+            Voir tout
+          </Link>
+        </div>
       </div>
     </section>
   );

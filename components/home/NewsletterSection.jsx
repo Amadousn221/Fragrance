@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { subscribeToNewsletter } from "@/lib/newsletter";
+import SectionHeading from "./SectionHeading";
 
 const MESSAGES = {
   invalid_email: "Veuillez saisir une adresse e-mail valide.",
@@ -29,7 +30,7 @@ export default function NewsletterSection() {
     <section className="hm-section hm-newsletter">
       <div className="container">
         <div className="hm-newsletter__inner">
-          <h2 className="hm-newsletter__title">Rejoignez notre univers</h2>
+          <SectionHeading title="Rejoignez notre univers" highlight="univers" />
           <p className="hm-newsletter__text">
             Nouveautés, sélections et offres exclusives directement dans votre boîte mail.
           </p>

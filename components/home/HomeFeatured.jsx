@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SectionHeading from "./SectionHeading";
 import ScrollRow from "./ScrollRow";
 import CatalogNotice from "@/components/woocommerce/CatalogNotice";
@@ -10,12 +11,7 @@ export default function HomeFeatured({ products, error }) {
   return (
     <section className="hm-section">
       <div className="container">
-        <SectionHeading
-          title="Sélection du moment"
-          subtitle="Nos coups de cœur du moment."
-          href="/shop"
-          linkLabel="Voir la boutique"
-        />
+        <SectionHeading title="Sélection du moment" highlight="moment" subtitle="Nos coups de cœur du moment." />
         {error ? (
           <CatalogNotice>{error}</CatalogNotice>
         ) : (
@@ -27,6 +23,11 @@ export default function HomeFeatured({ products, error }) {
             ))}
           </ScrollRow>
         )}
+        <div className="hm-more">
+          <Link href="/shop" className="hm-link">
+            Voir la boutique
+          </Link>
+        </div>
       </div>
     </section>
   );
