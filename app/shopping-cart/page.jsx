@@ -4,13 +4,19 @@ import Topbar6 from "@/components/headers/Topbar6";
 import ShopCart from "@/components/otherPages/ShopCart";
 import Link from "next/link";
 import React from "react";
+import WooRelatedProducts from "@/components/woocommerce/WooRelatedProducts";
+import { getProducts, isWooConfigured } from "@/lib/woocommerce";
 
 export const metadata = {
   title: "Panier | Fragrance",
   description: "Votre panier Fragrance.",
 };
 
-export default function ShopingCartPage() {
+export default async function ShopingCartPage() {
+  // Les suggestions ne doivent jamais empêcher l'affichage du panier.
+  const suggestions = isWooConfigured()
+    ? await getProducts({ perPage: 8, inStockOnly: true }).then((r) => r.products).catch(() => [])
+    : [];
   return (
     <>
       <Topbar6 bgColor="bg-main" />
@@ -44,6 +50,7 @@ export default function ShopingCartPage() {
       </div>
 
       <ShopCart />
+      <WooRelatedProducts products={suggestions} title="Vous aimerez aussi" />
       <Footer1 />
     </>
   );
