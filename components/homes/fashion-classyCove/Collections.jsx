@@ -4,57 +4,74 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Link from "next/link";
-export default function Collections() {
+// `items` : cartes a afficher (par defaut les donnees du template, utilisees par la page demo).
+// `title` / `subtitle` : en-tete facultatif ; `item.href` : destination de la carte.
+export default function Collections({
+  items = collectionItems2,
+  title,
+  subtitle,
+  className = "",
+}) {
+  if (!items.length) return null;
   return (
-    <section className="space-30">
+    <section className={`space-30 ${className}`}>
+      {title && (
+        <div className="heading-section-2 wow fadeInUp">
+          <div>
+            <h3>{title}</h3>
+            {subtitle && <p className="text-secondary mb-0">{subtitle}</p>}
+          </div>
+        </div>
+      )}
       <Swiper
         dir="ltr"
         slidesPerView={3}
         spaceBetween={30}
         breakpoints={{
-          1024: { slidesPerView: 3 },
-          768: { slidesPerView: 2 },
-          0: { slidesPerView: 1 },
+          1024: { slidesPerView: Math.min(3, items.length) },
+          768: { slidesPerView: Math.min(2, items.length) },
+          0: { slidesPerView: items.length > 1 ? 1.12 : 1, spaceBetween: 12 },
         }}
         className="swiper tf-sw-collection"
       >
-        {collectionItems2.map((item) => (
-          <SwiperSlide key={item.id}>
-            <div className="collection-position style-lg hover-img">
-              <a className="img-style">
-                <img
-                  className="lazyload"
-                  data-src={item.imgSrc}
-                  alt={item.alt}
-                  src={item.imgSrc}
-                  width={900}
-                  height={900}
-                />
-              </a>
-              <div className="content">
-                <h3 className="title wow fadeInUp">
-                  <Link href={`/shop-collection`} className="link text-white">
-                    {item.title}
-                  </Link>
-                </h3>
-                <p
-                  className="desc text-white text-title wow fadeInUp"
-                  data-wow-delay="0.1s"
-                >
-                  {item.desc}
-                </p>
-                <div className="wow fadeInUp" data-wow-delay="0.2s">
-                  <Link
-                    href={`/shop-collection`}
-                    className="btn-line style-white"
+        {items.map((item) => {
+          const href = item.href || "/shop-collection";
+          return (
+            <SwiperSlide key={item.id}>
+              <div className="collection-position style-lg hover-img">
+                <Link href={href} className="img-style" aria-label={item.title}>
+                  <img
+                    className="lazyload"
+                    data-src={item.imgSrc}
+                    alt={item.alt}
+                    src={item.imgSrc}
+                    width={900}
+                    height={900}
+                    loading="lazy"
+                  />
+                </Link>
+                <div className="content">
+                  <h3 className="title wow fadeInUp">
+                    <Link href={href} className="link text-white">
+                      {item.title}
+                    </Link>
+                  </h3>
+                  <p
+                    className="desc text-white text-title wow fadeInUp"
+                    data-wow-delay="0.1s"
                   >
-                    {item.btnText}
-                  </Link>
+                    {item.desc}
+                  </p>
+                  <div className="wow fadeInUp" data-wow-delay="0.2s">
+                    <Link href={href} className="btn-line style-white">
+                      {item.btnText}
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </section>
   );

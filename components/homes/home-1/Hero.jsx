@@ -5,17 +5,18 @@ import { slides as demoSlides } from "@/data/heroSlides";
 
 import Link from "next/link";
 // `slides` : contenu du Hero (par defaut les slides du template, utilises par les pages demo).
-export default function Hero({ slides = demoSlides }) {
+export default function Hero({ slides = demoSlides, className = "" }) {
+  const multiple = slides.length > 1;
   return (
-    <section className="tf-slideshow slider-default slider-effect-fade">
+    <section className={`tf-slideshow slider-default slider-effect-fade ${className}`}>
       <Swiper
         effect="fade"
         spaceBetween={0}
         centeredSlides={false}
         slidesPerView={1}
-        loop={true}
+        loop={multiple}
         modules={[EffectFade, Autoplay, Pagination]}
-        autoplay={{ delay: 3000 }}
+        autoplay={multiple ? { delay: 6000, pauseOnMouseEnter: true } : false}
         dir="ltr"
         pagination={{
           clickable: true,
@@ -29,6 +30,7 @@ export default function Hero({ slides = demoSlides }) {
               <img
                 alt={slide.alt}
                 src={slide.imgSrc}
+                fetchPriority={index === 0 ? "high" : undefined}
                 width={1920}
                 height={803}
               />
@@ -46,10 +48,13 @@ export default function Hero({ slides = demoSlides }) {
                         </span>
                       ))}
                     </div>
+                    {slide.text && (
+                      <p className="fade-item fade-item-2 text-white hero-text mb-0">{slide.text}</p>
+                    )}
                   </div>
                   <div className="fade-item fade-item-3 box-btn-slider">
                     <Link
-                      href="/shop"
+                      href={slide.btnHref || "/shop"}
                       className="tf-btn btn-fill btn-white"
                     >
                       <span className="text">{slide.btnText}</span>
@@ -62,11 +67,13 @@ export default function Hero({ slides = demoSlides }) {
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className="wrap-pagination">
-        <div className="container">
-          <div className="sw-dots sw-pagination-slider type-circle white-circle justify-content-center spd55" />
+      {multiple && (
+        <div className="wrap-pagination">
+          <div className="container">
+            <div className="sw-dots sw-pagination-slider type-circle white-circle justify-content-center spd55" />
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

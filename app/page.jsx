@@ -2,15 +2,18 @@ import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 import Topbar from "@/components/headers/Topbar";
 import Hero from "@/components/homes/home-1/Hero";
-import HomeAudienceCategories from "@/components/home/HomeAudienceCategories";
-import HomeNewArrivals from "@/components/home/HomeNewArrivals";
-import HomeTypeSlider from "@/components/home/HomeTypeSlider";
-import HomeFeatured from "@/components/home/HomeFeatured";
+import Collections from "@/components/homes/fashion-classyCove/Collections";
+import Products from "@/components/homes/fashion-chicHaven-02/Products";
+import Banner from "@/components/homes/home-pickleball/Banner";
+import BannerCollection from "@/components/homes/home-1/BannerCollection";
+import UniverseCollections from "@/components/homes/decor/Collections";
+import Products1 from "@/components/homes/sock/Products1";
 import NewsletterSection from "@/components/home/NewsletterSection";
 import HomeReassurance from "@/components/home/HomeReassurance";
 import { isWooConfigured } from "@/lib/woocommerce";
 import { getHomeCategoryBlocks, getHomeFeatured, getHomeNewArrivals } from "@/lib/woocommerce/home";
 import {
+  resolveEditorialBlocks,
   HOME_FEATURED_COUNT,
   HOME_FEATURED_MIN,
   HOME_HERO_SLIDES,
@@ -55,11 +58,82 @@ export default async function HomePage() {
     <>
       <Topbar />
       <Header1 />
-      <Hero slides={HOME_HERO_SLIDES} />
-      <HomeAudienceCategories blocks={categoryBlocks.audiences} />
-      <HomeNewArrivals {...arrivals} />
-      <HomeTypeSlider blocks={categoryBlocks.types} />
-      <HomeFeatured {...featured} />
+      <Hero slides={HOME_HERO_SLIDES} className="hm-hero" />
+      <Collections
+        className="hm-collections"
+        title="Pour lui, pour elle"
+        subtitle="Choisissez votre univers."
+        items={categoryBlocks.audiences.map((b) => ({
+          id: b.key,
+          imgSrc: b.image,
+          alt: b.label,
+          title: b.label,
+          desc: `${b.count} produit${b.count > 1 ? "s" : ""}`,
+          btnText: "Découvrir",
+          href: b.href,
+        }))}
+      />
+      <Products
+        className="hm-arrivals"
+        parentClass="flat-spacing"
+        title="Nouveautés"
+        subtitle="Les dernières arrivées en boutique."
+        href="/shop"
+        linkLabel="VOIR TOUT"
+        wooProducts={arrivals.products}
+        error={arrivals.error}
+      />
+      <UniverseCollections
+        className="hm-universes"
+        containerClass="container"
+        title="Explorer par univers"
+        subtitle=""
+        breakpoints={{
+          0: { slidesPerView: 1.25, spaceBetween: 12 },
+          576: { slidesPerView: 2.2, spaceBetween: 14 },
+          992: { slidesPerView: 3.25, spaceBetween: 16 },
+          1280: { slidesPerView: 4.2, spaceBetween: 20 },
+        }}
+        items={categoryBlocks.types.map((b) => ({
+          id: b.key,
+          imgSrc: b.image,
+          alt: b.label,
+          title: b.label,
+          productCount: "Découvrir",
+          href: b.href,
+        }))}
+      />
+      <BannerCollection
+        className="hm-editorial"
+        items={resolveEditorialBlocks(categoryBlocks.types).map((b) => ({
+          id: b.key,
+          imgSrc: b.image,
+          alt: b.title,
+          title: b.title,
+          desc: b.text,
+          btnText: "DÉCOUVRIR",
+          href: b.href,
+        }))}
+      />
+      <Banner
+        className="hm-brand"
+        imgSrc="/images/banner/banner-shop.jpg"
+        label="NOTRE UNIVERS"
+        title="Une sélection pensée pour votre style."
+        text="Fragrance réunit une sélection de parfums, accessoires et essentiels lifestyle choisis pour leur style et leur caractère."
+        btnText="DÉCOUVRIR LA BOUTIQUE"
+        href="/shop"
+      />
+      <Products1
+        className="hm-featured"
+        parentClass="flat-spacing"
+        title="Sélection du moment"
+        subtitle=""
+        href="/shop"
+        linkLabel="VOIR LA BOUTIQUE"
+        wooProducts={featured.products}
+        error={featured.error}
+      />
       <NewsletterSection />
       <HomeReassurance />
       <Footer1 />

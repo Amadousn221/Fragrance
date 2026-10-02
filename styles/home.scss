@@ -16,320 +16,344 @@
   background: var(--surface);
 }
 
-// ---------- En-tete de section ----------
-.hm-heading {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 28px;
-
-  @media (min-width: 768px) {
-    margin-bottom: 40px;
-  }
-}
-
-.hm-heading__title {
-  margin: 0;
-  font-size: 26px;
-  line-height: 1.2;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-
-  @media (min-width: 768px) {
-    font-size: 32px;
-  }
-}
-
-.hm-heading__sub {
-  margin: 8px 0 0;
-  font-size: 14px;
-  color: var(--secondary);
-}
-
-.hm-link {
-  flex-shrink: 0;
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--main);
-  padding-bottom: 3px;
-  border-bottom: 1px solid currentColor;
-  transition: opacity 0.2s;
-
-  &:hover {
-    opacity: 0.6;
-  }
-}
-
-.hm-link--quiet {
-  color: var(--secondary);
-  border-bottom-color: transparent;
-}
-
-// ---------- 02 Homme / Femme / Unisexe ----------
-.hm-audience {
-  padding-top: 32px;
+// ---------- 02 Homme / Femme / Unisexe (composant Modave fashion-classyCove/Collections, adapte) ----------
+.hm-collections {
+  padding: 32px 0 0;
 
   @media (min-width: 768px) {
     padding-top: 56px;
   }
-}
 
-.hm-audience__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex; // mobile : defilement horizontal
-  gap: 12px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  margin-inline: -16px;
-  padding-inline: 16px;
+  .heading-section-2,
+  .tf-sw-collection {
+    padding-inline: 16px;
 
-  &::-webkit-scrollbar {
-    display: none;
+    @media (min-width: 768px) {
+      padding-inline: 30px;
+    }
   }
 
-  @media (min-width: 768px) {
-    display: grid;
-    grid-template-columns: repeat(var(--hm-count, 3), minmax(0, 1fr));
-    gap: 16px;
-    overflow: visible;
-    margin-inline: 0;
-    padding-inline: 0;
-  }
-}
-
-.hm-audience__item {
-  flex: 0 0 78%;
-  scroll-snap-align: start;
-
-  @media (min-width: 768px) {
-    flex: none;
-  }
-}
-
-.hm-audience__card {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-  color: #fff;
-  background: var(--line);
-
-  @media (min-width: 768px) {
-    aspect-ratio: auto;
-    height: clamp(380px, 44vw, 640px);
+  .heading-section-2 {
+    margin-bottom: 20px;
   }
 
-  &:hover .hm-audience__img {
-    transform: scale(1.03);
+  // Voile pour garder le texte blanc lisible sur toute image (ou sur le visuel de remplacement).
+  .collection-position .img-style {
+    position: relative;
+    background: var(--line);
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.1) 60%);
+      pointer-events: none;
+    }
   }
-  &:hover .hm-audience__cta {
-    border-bottom-color: #fff;
+
+  .collection-position .img-style img {
+    aspect-ratio: 4 / 5;
+  }
+
+  .collection-position .content {
+    z-index: 2;
   }
 }
 
-.hm-audience__img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
+// ---------- 03 Nouveautes (composant Modave fashion-chicHaven-02/Products, adapte) ----------
+.hm-arrivals {
+  .heading-section {
+    margin-bottom: 28px;
 
-.hm-audience__veil {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 55%);
-}
-
-.hm-audience__body {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 24px;
-
-  @media (min-width: 768px) {
-    padding: 32px;
-  }
-}
-
-.hm-audience__title {
-  font-size: 22px;
-  line-height: 1.1;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-
-  @media (min-width: 1200px) {
-    font-size: 26px;
-  }
-}
-
-.hm-audience__cta {
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding-bottom: 3px;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s;
-}
-
-// ---------- 03 Nouveautes : grille ----------
-.hm-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px 14px;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 36px 20px;
-  }
-  @media (min-width: 992px) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 44px 24px;
+    @media (min-width: 768px) {
+      margin-bottom: 40px;
+    }
   }
 
-  // 6 produits en dessous de 992px (lignes completes), 8 au-dessus.
-  @media (max-width: 991.98px) {
-    .hm-grid__item:nth-child(n + 7) {
+  .heading-section .heading {
+    font-size: 28px;
+    letter-spacing: 0.01em;
+
+    @media (min-width: 768px) {
+      font-size: 36px;
+    }
+  }
+
+  .sec-btn {
+    margin-top: 32px;
+
+    .btn-line {
+      letter-spacing: 0.1em;
+      font-size: 14px;
+    }
+  }
+
+  // Colonnes strictement egales (le bouton "Ajouter au panier" ne doit pas elargir une colonne) et visuels 3:4.
+  .tf-grid-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 12px;
+    row-gap: 28px;
+
+    @media (min-width: 992px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 20px;
+      row-gap: 36px;
+    }
+    @media (min-width: 1200px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 24px;
+      row-gap: 44px;
+    }
+  }
+
+  // Toutes les photos au meme cadre 3:4, quel que soit leur format d'origine (recadrage par `cover`).
+  .card-product-wrapper {
+    aspect-ratio: 3 / 4;
+
+    .product-img {
+      position: absolute;
+      inset: 0;
+      height: auto;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  // Libelles longs ("Choisir les options") sans debordement dans les cartes etroites.
+  @media (max-width: 575.98px) {
+    .btn-main-product {
+      font-size: 11px;
+      letter-spacing: 0;
+      padding-inline: 6px;
+      white-space: nowrap;
+    }
+  }
+
+  // 6 produits en dessous de 1200px (lignes completes : 2x3 mobile, 3x2 tablette), 8 au-dessus (4x2).
+  @media (max-width: 1199.98px) {
+    .tf-grid-layout > :nth-child(n + 7) {
       display: none;
     }
   }
 }
 
-// ---------- 04 Explorer par univers : slider horizontal ----------
-// Reutilise la rangee .hm-row (defilement natif). Legende sous l'image, sans voile ni bordure.
-.hm-type__item {
-  flex: 0 0 72%;
-  scroll-snap-align: start;
+// ---------- 04 Explorer par univers (composant Modave decor/Collections, adapte) ----------
+// Grandes cartes portrait, libelle + "Decouvrir" en bas sur un voile leger ; la carte suivante reste visible.
+.hm-universes {
+  background: var(--surface);
 
-  @media (min-width: 768px) {
-    flex-basis: calc((100% - 40px) / 3);
-  }
-  @media (min-width: 1200px) {
-    flex-basis: calc((100% - 72px) / 4);
-  }
-}
+  .heading-section {
+    margin-bottom: 28px;
 
-.hm-type__card {
-  display: block;
-  color: var(--main);
-
-  &:hover .hm-type__img {
-    transform: scale(1.03);
-  }
-}
-
-.hm-type__media {
-  display: block;
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-  background: var(--line);
-}
-
-.hm-type__img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
-
-.hm-type__caption {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  padding-top: 14px;
-}
-
-.hm-type__title {
-  font-size: 15px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-
-  @media (min-width: 768px) {
-    font-size: 17px;
-  }
-}
-
-// ---------- 05 Selection : rangee a defilement horizontal ----------
-.hm-row__track {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  padding-bottom: 4px;
-  margin-inline: -16px;
-  padding-inline: 16px;
-
-  &::-webkit-scrollbar {
-    display: none;
+    @media (min-width: 768px) {
+      margin-bottom: 40px;
+    }
   }
 
-  @media (min-width: 768px) {
-    gap: 20px;
-    margin-inline: 0;
-    padding-inline: 0;
+  .heading-section .heading {
+    font-size: 28px;
+    text-transform: none;
+
+    @media (min-width: 768px) {
+      font-size: 36px;
+    }
   }
-  @media (min-width: 992px) {
-    gap: 24px;
+
+  .collection-position-2 {
+    border-radius: 4px;
+    background: var(--line);
+
+    .img-style img {
+      aspect-ratio: 4 / 5;
+      height: auto;
+    }
+
+    .img-style::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 45%);
+      pointer-events: none;
+    }
+
+    // Surcharge du style-7 (texte en haut, centre) : une ligne en bas, titre a gauche, action a droite.
+    &.style-7 .content {
+      top: auto;
+      bottom: 16px !important;
+      left: 16px;
+      right: 16px;
+      transform: none;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+      z-index: 2;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 15px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+
+      @media (min-width: 768px) {
+        font-size: 17px;
+      }
+    }
+
+    .text-title {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 2px;
+      white-space: nowrap;
+    }
   }
 }
 
-.hm-row__item {
-  flex: 0 0 62%;
-  scroll-snap-align: start;
-
-  @media (min-width: 768px) {
-    flex-basis: calc((100% - 40px) / 3);
-  }
-  @media (min-width: 992px) {
-    flex-basis: calc((100% - 72px) / 4);
-  }
-}
-
-.hm-row__nav {
-  display: none;
+// ---------- 06 Blocs editoriaux (composant Modave home-1/BannerCollection, adapte) ----------
+// Grande image, voile de contraste, titre + phrase courte + CTA en bas a gauche. Coins legerement arrondis (.radius).
+.hm-editorial {
+  padding-top: 48px;
 
   @media (min-width: 992px) {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
+    padding-top: 72px;
+  }
+
+  .tf-grid-layout {
+    row-gap: 16px;
+    column-gap: 16px;
+
+    @media (min-width: 1200px) {
+      column-gap: 24px;
+    }
+  }
+
+  .collection-position {
+    background: var(--line);
+
+    .img-style img {
+      aspect-ratio: 4 / 5;
+      height: auto;
+
+      @media (min-width: 576px) and (max-width: 991.98px) {
+        aspect-ratio: 16 / 10;
+      }
+    }
+
+    .img-style::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.12) 65%);
+      pointer-events: none;
+    }
+
+    .content {
+      z-index: 2;
+      top: auto;
+      bottom: 24px;
+      left: 24px;
+      right: 24px;
+      transform: none;
+      text-align: left;
+      justify-items: start;
+      gap: 10px;
+
+      @media (min-width: 1200px) {
+        bottom: 32px;
+        left: 32px;
+        right: 32px;
+      }
+    }
+
+    .title {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.15;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .desc {
+      margin: 0;
+      max-width: 28ch;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .btn-line {
+      margin-top: 6px;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+    }
+  }
+}
+
+// ---------- 05 Selection du moment (composant Modave sock/Products1, adapte) ----------
+// Meme traitement visuel que Nouveautes : photos au cadre 3:4, libelles de bouton sans debordement.
+.hm-featured {
+  padding-top: 0;
+
+  .heading-section {
+    margin-bottom: 28px;
+
+    @media (min-width: 768px) {
+      margin-bottom: 40px;
+    }
+  }
+
+  .heading-section .heading {
+    font-size: 28px;
+    text-transform: none;
+
+    @media (min-width: 768px) {
+      font-size: 36px;
+    }
+  }
+
+  .card-product-wrapper {
+    aspect-ratio: 3 / 4;
+
+    .product-img {
+      position: absolute;
+      inset: 0;
+      height: auto;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .btn-main-product {
+      font-size: 11px;
+      letter-spacing: 0;
+      padding-inline: 6px;
+      white-space: nowrap;
+    }
+  }
+
+  .sw-dots {
     margin-top: 24px;
   }
-}
 
-.hm-row__btn {
-  box-sizing: border-box;
-  flex: 0 0 38px;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--main);
-  font-size: 15px;
-  line-height: 1;
-  transition: border-color 0.2s;
+  .sec-btn {
+    margin-top: 28px;
 
-  &:hover {
-    border-color: var(--main);
+    .btn-line {
+      letter-spacing: 0.1em;
+      font-size: 14px;
+    }
   }
 }
 
@@ -478,5 +502,154 @@
 
   @media (min-width: 768px) {
     font-size: 14px;
+  }
+}
+
+// ---------- Hero (composant Modave home-1/Hero, adapte) ----------
+// Image en fond plein cadre, voile sombre pour la lisibilite du texte, contenu en bas a gauche.
+.hm-hero {
+  .wrap-slider {
+    min-height: 520px;
+    height: 78svh;
+    max-height: 640px;
+    background: #cfc4b6;
+
+    @media (min-width: 768px) {
+      min-height: 560px;
+      height: 72vh;
+      max-height: 720px;
+    }
+    @media (min-width: 1200px) {
+      height: 78vh;
+      max-height: 820px;
+    }
+
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.1) 100%);
+      pointer-events: none;
+    }
+  }
+
+  .box-content {
+    z-index: 2;
+    left: 0;
+    right: 0;
+    bottom: 56px;
+    padding: 0 20px;
+
+    @media (min-width: 1200px) {
+      bottom: 96px;
+      padding: 0 calc((100% - 1320px) / 2 + 12px);
+    }
+  }
+
+  .content-slider {
+    max-width: 560px;
+    gap: 24px;
+  }
+
+  .subheading {
+    letter-spacing: 0.18em;
+    font-size: 12px;
+  }
+
+  .heading {
+    font-size: 38px;
+    line-height: 1.1;
+    font-weight: 500;
+
+    @media (min-width: 768px) {
+      font-size: 56px;
+    }
+    @media (min-width: 1200px) {
+      font-size: 72px;
+    }
+  }
+
+  .hero-text {
+    margin-top: 6px;
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 440px;
+  }
+
+  .tf-btn {
+    min-height: 48px;
+    letter-spacing: 0.08em;
+    max-width: 100%;
+
+    @media (max-width: 575.98px) {
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      padding-inline: 18px;
+    }
+  }
+}
+
+// ---------- 07 Bloc editorial Fragrance (composant Modave home-pickleball/Banner, adapte) ----------
+// Respiration entre deux blocs commerciaux : encart sombre centre sur le visuel de fond.
+.flat-banner-parallax.hm-brand {
+  margin-top: 48px;
+  padding: 40px 0;
+  // Pas de parallaxe : stable sur mobile, et le fond n'est qu'un arriere-plan.
+  background-attachment: scroll;
+
+  @media (min-width: 992px) {
+    margin-top: 72px;
+    padding: 72px 0;
+  }
+
+  .fl-content {
+    padding: 40px 24px;
+    gap: 28px;
+
+    @media (min-width: 768px) {
+      padding: 56px 48px;
+    }
+  }
+
+  .title {
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    margin: 0;
+
+    @media (min-width: 768px) {
+      font-size: 36px;
+    }
+  }
+
+  .title-top > p:first-child {
+    letter-spacing: 0.18em;
+    font-size: 12px;
+  }
+
+  .body-text {
+    max-width: 46ch;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .tf-btn {
+    min-height: 48px;
+    letter-spacing: 0.08em;
+    max-width: 100%;
+
+    @media (max-width: 575.98px) {
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      padding-inline: 18px;
+    }
   }
 }
