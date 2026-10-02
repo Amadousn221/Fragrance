@@ -12,7 +12,7 @@ export default function ShopCart() {
     useContextElement();
 
   const productHref = (elm) =>
-    elm.slug ? `/product/${elm.slug}` : `/product-detail/${elm.id}`;
+    elm.slug ? `/product/${elm.slug}` : "/shop";
 
   return (
     <>

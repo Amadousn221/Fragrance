@@ -120,10 +120,12 @@ export default function Context({ children }) {
     return false;
   };
   useEffect(() => {
-    const items = JSON.parse(localStorage.getItem("cartList"));
-    if (items?.length) {
-      setCartProducts(items);
-    }
+    try {
+      const items = JSON.parse(localStorage.getItem("cartList"));
+      // Seules les lignes WooCommerce sont reprises : les anciennes lignes demo Modave sont ignorees.
+      const valid = Array.isArray(items) ? items.filter((l) => l && l.product_id && l.lineId) : [];
+      if (valid.length) setCartProducts(valid);
+    } catch {}
   }, []);
 
   useEffect(() => {

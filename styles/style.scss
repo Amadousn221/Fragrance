@@ -1,1 +1,9 @@
 @import "../public/scss/main.scss";
+
+// Fragrance : le template masque le coeur favori des cartes sous 768px ; sans lui, impossible d'ajouter
+// ou de retirer un favori sur telephone (cartes boutique et page /wish-list).
+@media only screen and (max-width: 767px) {
+  .card-product .list-product-btn .wishlist {
+    display: flex;
+  }
+}

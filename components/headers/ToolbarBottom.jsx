@@ -6,7 +6,7 @@ export default function ToolbarBottom() {
   return (
     <div className="tf-toolbar-bottom">
       <div className="toolbar-item">
-        <Link href={`/shop-default-grid`}>
+        <Link href="/shop">
           <div className="toolbar-icon">
             <svg
               className="icon"
@@ -22,7 +22,7 @@ export default function ToolbarBottom() {
               />
             </svg>
           </div>
-          <div className="toolbar-label">Shop</div>
+          <div className="toolbar-label">Boutique</div>
         </Link>
       </div>
       <div className="toolbar-item">
@@ -46,7 +46,7 @@ export default function ToolbarBottom() {
               />
             </svg>
           </div>
-          <div className="toolbar-label">Categories</div>
+          <div className="toolbar-label">Catégories</div>
         </a>
       </div>
       <div className="toolbar-item">
@@ -66,7 +66,7 @@ export default function ToolbarBottom() {
               />
             </svg>
           </div>
-          <div className="toolbar-label">Search</div>
+          <div className="toolbar-label">Recherche</div>
         </a>
       </div>
       <div className="toolbar-item">
@@ -87,7 +87,7 @@ export default function ToolbarBottom() {
             </svg>
             {/* <div class="toolbar-count">1</div> */}
           </div>
-          <div className="toolbar-label">Wishlist</div>
+          <div className="toolbar-label">Favoris</div>
         </a>
       </div>
       <div className="toolbar-item">
@@ -110,7 +110,7 @@ export default function ToolbarBottom() {
               />
             </svg>
           </div>
-          <div className="toolbar-label">Cart</div>
+          <div className="toolbar-label">Panier</div>
         </a>
       </div>
     </div>

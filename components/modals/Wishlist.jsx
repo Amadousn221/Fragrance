@@ -49,7 +49,7 @@ export default function Wishlist() {
                                 className="text-button tf-btn-remove remove"
                                 onClick={() => removeFromWishlist(elm.product_id)}
                               >
-                                Remove
+                                Retirer
                               </div>
                             </div>
                             <div className="d-flex align-items-center justify-content-between flex-wrap gap-12">

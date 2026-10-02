@@ -8,17 +8,26 @@ import QuickView from "@/components/modals/QuickView";
 import QuickAdd from "@/components/modals/QuickAdd";
 import Compare from "@/components/modals/Compare";
 import MobileMenu from "@/components/modals/MobileMenu";
-import NewsLetterModal from "@/components/modals/NewsLetterModal";
 import SearchModal from "@/components/modals/SearchModal";
 import SizeGuide from "@/components/modals/SizeGuide";
 import Wishlist from "@/components/modals/Wishlist";
-import DemoModal from "@/components/modals/DemoModal";
 import Categories from "@/components/modals/Categories";
 import AccountSidebar from "@/components/modals/AccountSidebar";
 import RtlToggler from "@/components/common/RtlToggler";
 
+// Routes du parcours client reel (WooCommerce). Les modales et outils demo du template (quick view,
+// quick add, comparateur, guide des tailles, compte demo, bascule RTL) ne sont pas montes sur ces routes.
+const isStorefrontRoute = (p) =>
+  p === "/" ||
+  p === "/shop" ||
+  p === "/shopping-cart" ||
+  p === "/wish-list" ||
+  p.startsWith("/category/") ||
+  p.startsWith("/product/");
+
 export default function AppShell({ children }) {
   const pathname = usePathname();
+  const demoTools = !isStorefrontRoute(pathname);
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Import the script only on the client side
@@ -130,18 +139,16 @@ export default function AppShell({ children }) {
     <Context>
       <div id="wrapper">{children}</div>
       <CartModal />
-      <QuickView />
-      <QuickAdd />
-      <Compare />
+      {demoTools && <QuickView />}
+      {demoTools && <QuickAdd />}
+      {demoTools && <Compare />}
       <MobileMenu />
-      <NewsLetterModal />
       <SearchModal />
-      <SizeGuide />
+      {demoTools && <SizeGuide />}
       <Wishlist />
-      <DemoModal />
       <Categories />
-      <RtlToggler />
-      <AccountSidebar />
+      {demoTools && <RtlToggler />}
+      {demoTools && <AccountSidebar />}
     </Context>
   );
 }

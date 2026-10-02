@@ -1,28 +1,47 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { formatPrice } from "@/lib/format";
 
-import { productMain } from "@/data/products";
-import ProductCard1 from "../productCards/ProductCard1";
+// Recherche produits WooCommerce reels (via /api/woocommerce/products?search=).
+// Aucune donnee statique : sans saisie, la modale n'affiche aucun produit.
 export default function SearchModal() {
-  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState("");
+  const [state, setState] = useState({ status: "idle", products: [] });
 
-  const [loadedItems, setLoadedItems] = useState(productMain.slice(0, 8));
-  const handleLoad = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoadedItems((pre) => [
-        ...pre,
-        ...productMain.slice(pre.length, pre.length + 4),
-      ]);
-      setLoading(false);
-    }, 1000);
-  };
+  useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2) {
+      setState({ status: "idle", products: [] });
+      return;
+    }
+    const controller = new AbortController();
+    setState((s) => ({ ...s, status: "loading" }));
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `/api/woocommerce/products?search=${encodeURIComponent(q)}&per_page=8`,
+          { signal: controller.signal }
+        );
+        if (!res.ok) throw new Error(String(res.status));
+        const json = await res.json();
+        setState({ status: "done", products: json.products || [] });
+      } catch (e) {
+        if (e.name !== "AbortError") setState({ status: "error", products: [] });
+      }
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query]);
+
   return (
     <div className="modal fade modal-search" id="search">
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="d-flex justify-content-between align-items-center">
-            <h5>Search</h5>
+            <h5>Recherche</h5>
             <span
               className="icon-close icon-close-popup"
               data-bs-dismiss="modal"
@@ -31,17 +50,17 @@ export default function SearchModal() {
           <form className="form-search" onSubmit={(e) => e.preventDefault()}>
             <fieldset className="text">
               <input
-                type="text"
-                placeholder="Searching..."
-                className=""
+                type="search"
+                placeholder="Rechercher un produit…"
                 name="text"
                 tabIndex={0}
-                defaultValue=""
-                aria-required="true"
-                required
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                autoComplete="off"
+                aria-label="Rechercher un produit"
               />
             </fieldset>
-            <button className="" type="submit">
+            <button type="submit" aria-label="Rechercher">
               <svg
                 className="icon"
                 width={20}
@@ -68,58 +87,31 @@ export default function SearchModal() {
             </button>
           </form>
           <div>
-            <h5 className="mb_16">Feature keywords Today</h5>
-            <ul className="list-tags">
-              <li>
-                <a href="#" className="radius-60 link">
-                  Dresses
-                </a>
-              </li>
-              <li>
-                <a href="#" className="radius-60 link">
-                  Dresses women
-                </a>
-              </li>
-              <li>
-                <a href="#" className="radius-60 link">
-                  Dresses midi
-                </a>
-              </li>
-              <li>
-                <a href="#" className="radius-60 link">
-                  Dress summer
-                </a>
-              </li>
-            </ul>
+            {state.status === "loading" && <p className="text-caption-1">Recherche en cours…</p>}
+            {state.status === "error" && (
+              <p className="text-caption-1">La recherche est momentanément indisponible.</p>
+            )}
+            {state.status === "done" && state.products.length === 0 && (
+              <p className="text-caption-1">Aucun produit ne correspond à « {query.trim()} ».</p>
+            )}
+            {state.products.length > 0 && (
+              <ul className="d-flex flex-column gap-3 mt-3" style={{ listStyle: "none", padding: 0 }}>
+                {state.products.map((p) => (
+                  <li key={p.id}>
+                    <Link href={`/product/${p.slug}`} className="d-flex align-items-center gap-3 link">
+                      {p.imgSrc && (
+                        <img src={p.imgSrc} alt={p.title} width={56} height={72} style={{ objectFit: "cover" }} />
+                      )}
+                      <span className="flex-grow-1">
+                        <span className="d-block text-title">{p.title}</span>
+                        <span className="d-block text-caption-1">{formatPrice(p.price)}</span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          <div>
-            <h6 className="mb_16">Recently viewed products</h6>
-            <div className="tf-grid-layout tf-col-2 lg-col-3 xl-col-4">
-              {loadedItems.map((product, i) => (
-                <ProductCard1 product={product} key={i} />
-              ))}
-            </div>
-          </div>
-          {/* Load Item */}
-
-          {productMain.length == loadedItems.length ? (
-            ""
-          ) : (
-            <div
-              className="wd-load view-more-button text-center"
-              onClick={() => handleLoad()}
-            >
-              <button
-                className={`tf-loading btn-loadmore tf-btn btn-reset ${
-                  loading ? "loading" : ""
-                } `}
-              >
-                <span className="text text-btn text-btn-uppercase">
-                  Load more
-                </span>
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>
