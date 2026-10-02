@@ -206,85 +206,37 @@
   }
 }
 
-// ---------- 04 Mosaique par type ----------
-.hm-mosaic {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: clamp(220px, 58vw, 340px);
-  gap: 20px 12px;
-
-  // Mobile/tablette : 1er bloc pleine largeur, un dernier bloc seul sur sa ligne aussi.
-  @media (max-width: 991.98px) {
-    .hm-mosaic__item:first-child,
-    .hm-mosaic__item:last-child:nth-child(even) {
-      grid-column: 1 / -1;
-    }
-  }
+// ---------- 04 Explorer par univers : slider horizontal ----------
+// Reutilise la rangee .hm-row (defilement natif). Legende sous l'image, sans voile ni bordure.
+.hm-type__item {
+  flex: 0 0 72%;
+  scroll-snap-align: start;
 
   @media (min-width: 768px) {
-    grid-auto-rows: clamp(260px, 40vw, 380px);
-    gap: 28px 16px;
+    flex-basis: calc((100% - 40px) / 3);
   }
-
-  // Desktop : grand bloc a gauche (2 rangees), blocs plus petits a droite puis en bas.
-  @media (min-width: 992px) {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-auto-rows: clamp(250px, 23vw, 360px);
-    gap: 32px 20px;
-
-    .hm-mosaic__item:nth-child(n) {
-      grid-column: auto;
-      grid-row: auto;
-    }
-    .hm-mosaic__item:nth-child(1) {
-      grid-column: 1 / 8;
-      grid-row: span 2;
-    }
-    .hm-mosaic__item:nth-child(2),
-    .hm-mosaic__item:nth-child(3) {
-      grid-column: 8 / 13;
-    }
-    .hm-mosaic__item:nth-child(4) {
-      grid-column: 1 / 7;
-    }
-    .hm-mosaic__item:nth-child(5) {
-      grid-column: 7 / 13;
-    }
-    &[data-count="1"] .hm-mosaic__item:nth-child(1) {
-      grid-column: 1 / -1;
-      grid-row: auto;
-    }
-    &[data-count="2"] .hm-mosaic__item:nth-child(2) {
-      grid-row: span 2;
-    }
-    &[data-count="4"] .hm-mosaic__item:nth-child(4) {
-      grid-column: 1 / -1;
-    }
+  @media (min-width: 1200px) {
+    flex-basis: calc((100% - 72px) / 4);
   }
 }
 
-.hm-mosaic__card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+.hm-type__card {
+  display: block;
   color: var(--main);
 
-  &:hover .hm-mosaic__img {
+  &:hover .hm-type__img {
     transform: scale(1.03);
   }
 }
 
-.hm-mosaic__media {
-  flex: 1;
-  min-height: 0;
+.hm-type__media {
+  display: block;
   overflow: hidden;
+  aspect-ratio: 4 / 5;
   background: var(--line);
 }
 
-.hm-mosaic__img {
+.hm-type__img {
   display: block;
   width: 100%;
   height: 100%;
@@ -292,7 +244,7 @@
   transition: transform 0.6s ease;
 }
 
-.hm-mosaic__caption {
+.hm-type__caption {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -300,7 +252,7 @@
   padding-top: 14px;
 }
 
-.hm-mosaic__title {
+.hm-type__title {
   font-size: 15px;
   letter-spacing: 0.12em;
   text-transform: uppercase;

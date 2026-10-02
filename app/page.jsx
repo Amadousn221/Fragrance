@@ -4,7 +4,7 @@ import Topbar from "@/components/headers/Topbar";
 import Hero from "@/components/homes/home-1/Hero";
 import HomeAudienceCategories from "@/components/home/HomeAudienceCategories";
 import HomeNewArrivals from "@/components/home/HomeNewArrivals";
-import HomeTypeMosaic from "@/components/home/HomeTypeMosaic";
+import HomeTypeSlider from "@/components/home/HomeTypeSlider";
 import HomeFeatured from "@/components/home/HomeFeatured";
 import NewsletterSection from "@/components/home/NewsletterSection";
 import HomeReassurance from "@/components/home/HomeReassurance";
@@ -58,7 +58,7 @@ export default async function HomePage() {
       <Hero slides={HOME_HERO_SLIDES} />
       <HomeAudienceCategories blocks={categoryBlocks.audiences} />
       <HomeNewArrivals {...arrivals} />
-      <HomeTypeMosaic blocks={categoryBlocks.types} />
+      <HomeTypeSlider blocks={categoryBlocks.types} />
       <HomeFeatured {...featured} />
       <NewsletterSection />
       <HomeReassurance />
