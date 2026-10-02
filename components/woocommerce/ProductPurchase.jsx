@@ -141,13 +141,15 @@ export default function ProductPurchase({ product }) {
                             const disabled = state !== "ok";
                             const id = `opt-${attr.name}-${option}`.replace(/\s+/g, "-");
                             return (
-                              <div key={option} onClick={() => !disabled && select(attr.name, option)}>
+                              <div key={option}>
+                                {/* Clic gere sur l'input : un clic sur le label le declenche une seule fois. */}
                                 <input
                                   type="radio"
                                   id={id}
                                   name={`attr-${attr.name}`}
                                   checked={selection[attr.name] === option}
                                   disabled={disabled}
+                                  onClick={() => !disabled && select(attr.name, option)}
                                   readOnly
                                 />
                                 <label
