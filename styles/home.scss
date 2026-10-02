@@ -42,6 +42,8 @@
   .collection-position .img-style img {
     aspect-ratio: 4 / 3; // mobile : cartes larges, une par ligne
     height: auto;
+    object-fit: cover;
+    object-position: 50% 18%; // portraits : on garde le visage lors du recadrage
 
     @media (min-width: 768px) {
       aspect-ratio: 4 / 5;
@@ -196,57 +198,50 @@
   }
 }
 
-// ---------- 04 Explorer par univers : meme composant et memes cartes que Homme / Femme / Unisexe, en grille ----------
-// Pas de slider : les cartes sont toutes visibles (1 par ligne en mobile, 2 en tablette, 3 sur desktop).
-.hm-collections--grid {
-  .tf-sw-collection .swiper-wrapper {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    transform: none !important;
+// ---------- 04 Explorer par univers (composant Modave fashion-main/Collections2, adapte) ----------
+// Slider pleine largeur du template (3 cartes en desktop, 2 en tablette, 1 en mobile, points de pagination).
+.hm-universes {
+  padding-top: 32px;
+  padding-bottom: 32px;
 
-    @media (min-width: 576px) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-    @media (min-width: 992px) {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-    }
+  @media (min-width: 768px) {
+    padding-top: 56px;
   }
 
-  .tf-sw-collection .swiper-slide {
-    width: auto !important;
-    margin: 0 !important;
-  }
+  // Voile pour garder le texte blanc lisible sur toute image (ou sur le visuel de remplacement).
+  .collection-position .img-style {
+    position: relative;
+    background: var(--line);
 
-  // 4 univers : 2 x 2 puis 4 colonnes en grand ecran ; 2 univers : 2 colonnes (jamais de colonne orpheline).
-  &.hm-collections--n4 .tf-sw-collection .swiper-wrapper {
-    @media (min-width: 992px) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    @media (min-width: 1200px) {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-
-  // 2 x 2 en largeur moyenne : cartes plus basses pour ne pas allonger la page.
-  &.hm-collections--n4 .collection-position .img-style img {
-    @media (min-width: 992px) and (max-width: 1199.98px) {
-      aspect-ratio: 4 / 3;
-    }
-  }
-
-  &.hm-collections--n2 .tf-sw-collection .swiper-wrapper {
-    @media (min-width: 576px) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.05) 65%);
+      pointer-events: none;
     }
   }
 
   .collection-position .img-style img {
-    @media (min-width: 576px) and (max-width: 991.98px) {
-      aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    object-fit: cover;
+
+    @media (min-width: 768px) {
+      aspect-ratio: 4 / 5;
     }
+  }
+
+  // Texte en bas de l'image (les visuels laissent la moitie basse calme et sombre).
+  .collection-position .content {
+    z-index: 2;
+    top: auto;
+    bottom: 28px;
+    transform: none;
+  }
+
+  .sw-dots {
+    margin-top: 20px;
   }
 }
 
@@ -576,6 +571,7 @@
 $hm-accent: #c9a24b;
 
 .hm-collections,
+.hm-universes,
 .hm-arrivals,
 .hm-featured {
   .heading-section {
