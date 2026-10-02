@@ -4,7 +4,7 @@ import { Pagination } from "swiper/modules";
 import WooProductCard from "./WooProductCard";
 
 // Section « Produits similaires » (balisage Modave de RelatedProducts) alimentee par WooCommerce.
-export default function WooRelatedProducts({ products }) {
+export default function WooRelatedProducts({ products, title = "Produits similaires" }) {
   if (!products?.length) return null;
   return (
     <section className="flat-spacing pt-0">
@@ -12,7 +12,7 @@ export default function WooRelatedProducts({ products }) {
         <ul className="tab-product justify-content-sm-center wow fadeInUp" role="tablist">
           <li className="nav-tab-item" role="presentation">
             <a href="#relatedProducts" className="active" data-bs-toggle="tab">
-              Produits similaires
+              {title}
             </a>
           </li>
         </ul>

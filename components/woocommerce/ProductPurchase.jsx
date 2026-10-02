@@ -90,7 +90,7 @@ export default function ProductPurchase({ product }) {
   const handleBuyNow = () => {
     if (!canAdd) return;
     addWooItem(buildItem());
-    router.push("/checkout");
+    router.push("/shopping-cart");
   };
 
   const showTab = (id) => {
