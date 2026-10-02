@@ -605,33 +605,46 @@
     }
   }
 
-  // Mobile : le visuel portrait en haut, le texte repose sur une zone sombre juste en dessous.
+  // Mobile : meme principe que la reference. Le visuel paysage (zone gauche sombre, flacon a droite) est
+  // cadre sur le flacon et le texte se superpose a gauche, dans la moitie basse. Texte minimal : sans phrase.
   @media (max-width: 767.98px) {
     .wrap-slider {
-      height: auto;
-      padding-bottom: 40px;
-    }
-    .wrap-slider picture {
-      height: auto;
-      aspect-ratio: 941 / 1250;
+      height: 500px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(90deg, rgba(10, 7, 5, 0.7) 0%, rgba(10, 7, 5, 0) 68%);
+        pointer-events: none;
+      }
     }
     .wrap-slider img {
-      object-position: 50% 0;
-      -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent);
-      mask-image: linear-gradient(to bottom, #000 88%, transparent);
+      object-position: 58% 50%;
     }
     .box-content {
-      position: relative;
-      display: block;
-      margin-top: -28px;
-      padding-inline: 20px;
+      z-index: 2;
+      align-items: center;
+      padding: 56px 20px 0;
+    }
+    .subheading {
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      font-size: 12px;
+      letter-spacing: 0.22em;
     }
     .heading {
-      font-size: 44px;
+      margin-bottom: 26px;
+      font-size: 40px;
+    }
+    .hm-hero__text {
+      display: none;
     }
     .box-btn-slider {
       flex-direction: column;
       align-items: flex-start;
+      gap: 10px;
     }
   }
 }
