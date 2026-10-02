@@ -5,12 +5,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import Link from "next/link";
 // `items` : cartes a afficher (par defaut les donnees du template, utilisees par la page demo).
-// `title` / `subtitle` : en-tete facultatif ; `item.href` : destination de la carte.
+// `title` / `subtitle` : en-tete facultatif ; `item.href` : destination de la carte ;
+// `btnClass` / `btnIcon` : style du bouton (lien souligne par defaut, bouton plein avec fleche si precise).
 export default function Collections({
   items = collectionItems2,
   title,
   subtitle,
   className = "",
+  btnClass = "btn-line style-white",
+  btnIcon = false,
 }) {
   if (!items.length) return null;
   return (
@@ -61,8 +64,9 @@ export default function Collections({
                     {item.desc}
                   </p>
                   <div className="wow fadeInUp" data-wow-delay="0.2s">
-                    <Link href={href} className="btn-line style-white">
-                      {item.btnText}
+                    <Link href={href} className={btnClass}>
+                      <span className="text">{item.btnText}</span>
+                      {btnIcon && <i className="icon icon-arrowUpRight" />}
                     </Link>
                   </div>
                 </div>

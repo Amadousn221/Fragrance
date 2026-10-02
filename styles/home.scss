@@ -33,12 +33,85 @@
     }
   }
 
+  // Cartes arrondies, texte en bas a gauche (titre gras, phrase, bouton arrondi avec fleche).
+  .collection-position {
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
   .collection-position .img-style img {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 4 / 3; // mobile : cartes larges, une par ligne
+    height: auto;
+
+    @media (min-width: 768px) {
+      aspect-ratio: 4 / 5;
+    }
   }
 
   .collection-position .content {
     z-index: 2;
+    top: auto;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    transform: none;
+    text-align: left;
+    justify-items: start;
+    gap: 6px;
+
+    @media (min-width: 768px) {
+      bottom: 28px;
+      left: 28px;
+      right: 28px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-transform: none;
+
+      @media (min-width: 768px) {
+        font-size: 34px;
+      }
+    }
+
+    .desc {
+      margin: 0 0 8px;
+      font-size: 15px;
+      text-transform: none;
+    }
+
+    .tf-btn {
+      min-height: 44px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      background: #c9a24b;
+      color: var(--main);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+
+      &:hover {
+        background: #fff;
+      }
+    }
+  }
+
+  // Mobile : cartes empilees (une par ligne) au lieu d'un defilement horizontal.
+  @media (max-width: 767.98px) {
+    .tf-sw-collection .swiper-wrapper {
+      display: block;
+      transform: none !important;
+    }
+
+    .tf-sw-collection .swiper-slide {
+      width: 100% !important;
+      margin: 0 0 12px !important;
+    }
   }
 }
 
@@ -146,7 +219,7 @@
   }
 
   .collection-position-2 {
-    border-radius: 4px;
+    border-radius: 20px;
     background: var(--line);
 
     .img-style img {
@@ -475,59 +548,6 @@
       font-size: 13px;
       letter-spacing: 0.04em;
       padding-inline: 18px;
-    }
-  }
-}
-
-// ---------- 11 Pied de page (composant Modave footers/Footer1, adapte) ----------
-// Nom de marque en texte (identique a l'en-tete) ; colonnes aerees sur desktop, accordeons sur mobile (theme).
-.hm-footer {
-  .footer-body {
-    padding-top: 56px;
-    padding-bottom: 40px;
-
-    @media (min-width: 992px) {
-      padding-top: 80px;
-      padding-bottom: 64px;
-    }
-  }
-
-  .hm-footer__brand {
-    font-size: 22px;
-    letter-spacing: 0.22em;
-    color: var(--main);
-  }
-
-  &.bg-main .hm-footer__brand {
-    color: #fff;
-  }
-
-  .footer-heading {
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-
-  .footer-menu .footer-menu-list {
-    gap: 10px;
-  }
-
-  @media (min-width: 992px) {
-    .footer-menu {
-      gap: 96px;
-    }
-
-    // Longue liste (navigation + categories) sur deux colonnes pour ne pas allonger le pied de page.
-    .footer-menu .hm-footer__list--wide {
-      display: block;
-      column-count: 2;
-      column-gap: 64px;
-      min-width: 340px;
-
-      li {
-        break-inside: avoid;
-        margin-bottom: 10px;
-      }
     }
   }
 }

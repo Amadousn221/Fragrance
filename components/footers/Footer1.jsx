@@ -1,30 +1,53 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
 
 import ToolbarBottom from "../headers/ToolbarBottom";
 import ScrollTop from "../common/ScrollTop";
-import useCategories from "@/components/woocommerce/useCategories";
-import { resolveNavItems } from "@/lib/woocommerce/home-config";
 import { footerLinks, socialLinks } from "@/data/footerLinks";
 export default function Footer1({
   border = true,
   dark = false,
   hasPaddingBottom = false,
 }) {
-  // Navigation : Boutique + Nouveautes + categories WooCommerce reellement disponibles (comme l'en-tete).
-  const navItems = [
-    { key: "boutique", label: "Boutique", href: "/shop" },
-    ...resolveNavItems(useCategories()),
-  ];
-  const columns = [
-    { heading: "Navigation", items: navItems },
-    ...footerLinks
-      .map((s) => ({ heading: s.heading, items: s.items.filter((i) => i.ready) }))
-      .filter((s) => s.items.length),
-  ];
+  const [success, setSuccess] = useState(true);
+  const [showMessage, setShowMessage] = useState(false);
 
+  const handleShowMessage = () => {
+    setShowMessage(true);
+    setTimeout(() => {
+      setShowMessage(false);
+    }, 2000);
+  };
+
+  const sendEmail = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    const email = e.target.email.value;
+
+    try {
+      const response = await axios.post(
+        "https://express-brevomail.vercel.app/api/contacts",
+        {
+          email,
+        }
+      );
+
+      if ([200, 201].includes(response.status)) {
+        e.target.reset(); // Reset the form
+        setSuccess(true); // Set success state
+        handleShowMessage();
+      } else {
+        setSuccess(false); // Handle unexpected responses
+        handleShowMessage();
+      }
+    } catch (error) {
+      console.error("Error:", error.response?.data || "An error occurred");
+      setSuccess(false); // Set error state
+      handleShowMessage();
+      e.target.reset(); // Reset the form
+    }
+  };
   useEffect(() => {
     const headings = document.querySelectorAll(".footer-heading-mobile");
 
@@ -45,17 +68,18 @@ export default function Footer1({
       heading.addEventListener("click", toggleOpen);
     });
 
+    // Clean up event listeners when the component unmounts
     return () => {
       headings.forEach((heading) => {
         heading.removeEventListener("click", toggleOpen);
       });
     };
-  }, [columns.length]);
+  }, []); // Empty dependency array means this will run only once on mount
   return (
     <>
       <footer
         id="footer"
-        className={`footer hm-footer ${dark ? "bg-main" : ""} ${
+        className={`footer ${dark ? "bg-main" : ""} ${
           hasPaddingBottom ? "has-pb" : ""
         } `}
       >
@@ -66,54 +90,147 @@ export default function Footer1({
                 <div className="col-lg-4">
                   <div className="footer-infor">
                     <div className="footer-logo">
-                      <Link
-                        href={`/`}
-                        className="hm-footer__brand fw-semibold text-uppercase"
-                        aria-label="Fragrance, accueil"
-                      >
-                        Fragrance
+                      <Link href={`/`}>
+                        <img
+                          alt=""
+                          src={
+                            dark
+                              ? "/images/logo/logo-white.svg"
+                              : "/images/logo/logo.svg"
+                          }
+                        />
                       </Link>
                     </div>
-                    {socialLinks.length > 0 && (
-                      <ul className={`tf-social-icon ${dark ? "style-white" : ""}`}>
-                        {socialLinks.map((link) => (
-                          <li key={link.href}>
-                            <a
-                              href={link.href}
-                              aria-label={link.label}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <i className={`icon ${link.iconClass}`} />
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <ul
+                      className={`tf-social-icon  ${
+                        dark ? "style-white" : ""
+                      } `}
+                    >
+                      {socialLinks.map((link, index) => (
+                        <li key={index}>
+                          <a href={link.href} className={link.className}>
+                            <i className={`icon ${link.iconClass}`} />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
-                <div className="col-lg-8">
+                <div className="col-lg-4">
                   <div className="footer-menu">
-                    {columns.map((section) => (
-                      <div className="footer-col-block" key={section.heading}>
+                    {footerLinks.map((section, sectionIndex) => (
+                      <div className="footer-col-block" key={sectionIndex}>
                         <div className="footer-heading text-button footer-heading-mobile">
                           {section.heading}
                         </div>
                         <div className="tf-collapse-content">
-                          <ul
-                            className={`footer-menu-list ${section.items.length > 6 ? "hm-footer__list--wide" : ""}`}
-                          >
-                            {section.items.map((item) => (
-                              <li className="text-caption-1" key={item.key || item.href}>
-                                <Link href={item.href} className="footer-menu_item">
-                                  {item.label}
-                                </Link>
+                          <ul className="footer-menu-list">
+                            {section.items.map((item, itemIndex) => (
+                              <li className="text-caption-1" key={itemIndex}>
+                                {item.isLink ? (
+                                  <Link
+                                    href={item.href}
+                                    className="footer-menu_item"
+                                  >
+                                    {item.label}
+                                  </Link>
+                                ) : (
+                                  <a
+                                    href={item.href}
+                                    className="footer-menu_item"
+                                  >
+                                    {item.label}
+                                  </a>
+                                )}
                               </li>
                             ))}
                           </ul>
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+                <div className="col-lg-4">
+                  <div className="footer-col-block">
+                    <div className="footer-heading text-button footer-heading-mobile">
+                      Newletter
+                    </div>
+                    <div className="tf-collapse-content">
+                      <div className="footer-newsletter">
+                        <p className="text-caption-1">
+                          Sign up for our newsletter and get 10% off your first
+                          purchase
+                        </p>
+                        <div
+                          className={`tfSubscribeMsg  footer-sub-element ${
+                            showMessage ? "active" : ""
+                          }`}
+                        >
+                          {success ? (
+                            <p style={{ color: "rgb(52, 168, 83)" }}>
+                              You have successfully subscribed.
+                            </p>
+                          ) : (
+                            <p style={{ color: "red" }}>Something went wrong</p>
+                          )}
+                        </div>
+                        <form
+                          onSubmit={sendEmail}
+                          className={`form-newsletter subscribe-form ${
+                            dark ? "style-black" : ""
+                          }`}
+                        >
+                          <div className="subscribe-content">
+                            <fieldset className="email">
+                              <input
+                                type="email"
+                                name="email"
+                                className="subscribe-email"
+                                placeholder="Enter your e-mail"
+                                tabIndex={0}
+                                aria-required="true"
+                              />
+                            </fieldset>
+                            <div className="button-submit">
+                              <button
+                                className="subscribe-button"
+                                type="submit"
+                              >
+                                <i className="icon icon-arrowUpRight" />
+                              </button>
+                            </div>
+                          </div>
+                          <div className="subscribe-msg" />
+                        </form>
+                        <div className="tf-cart-checkbox">
+                          <div className="tf-checkbox-wrapp">
+                            <input
+                              className=""
+                              type="checkbox"
+                              id="footer-Form_agree"
+                              name="agree_checkbox"
+                            />
+                            <div>
+                              <i className="icon-check" />
+                            </div>
+                          </div>
+                          <label
+                            className="text-caption-1"
+                            htmlFor="footer-Form_agree"
+                          >
+                            By clicking subcribe, you agree to the{" "}
+                            <Link className="fw-6 link" href={`/term-of-use`}>
+                              Terms of Service
+                            </Link>{" "}
+                            and{" "}
+                            <a className="fw-6 link" href="#">
+                              Privacy Policy
+                            </a>
+                            .
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

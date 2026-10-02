@@ -62,6 +62,8 @@ export default async function HomePage() {
       <Hero slides={HOME_HERO_SLIDES} className="hm-hero" />
       <Collections
         className="hm-collections"
+        btnClass="tf-btn btn-fill btn-white"
+        btnIcon
         title="Pour lui, pour elle"
         subtitle="Choisissez votre univers."
         items={categoryBlocks.audiences.map((b) => ({
