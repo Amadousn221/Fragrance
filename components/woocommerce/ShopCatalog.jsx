@@ -89,13 +89,13 @@ export default function ShopCatalog({ products, total, totalPages, state, basePa
         ) : state.view === "list" ? (
           <div className="tf-list-layout wrapper-shop" id="listLayout">
             {products.map((product) => (
-              <WooProductCardList key={product.id} product={product} />
+              <WooProductCardList key={product.cardKey ?? product.id} product={product} />
             ))}
           </div>
         ) : (
           <div className="tf-grid-layout tf-col-2 lg-col-3 xl-col-4 wrapper-shop" id="gridLayout">
             {products.map((product) => (
-              <WooProductCard key={product.id} product={product} gridClass="grid" />
+              <WooProductCard key={product.cardKey ?? product.id} product={product} gridClass="grid" />
             ))}
           </div>
         )}
