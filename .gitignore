@@ -53,3 +53,7 @@ next-env.d.ts
 .vercel
 .env*
 *.bundle
+
+# Packs produits locaux et reglages Claude Code
+/Produits/
+/.claude/
