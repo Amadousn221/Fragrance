@@ -7,7 +7,7 @@ import ProductGallery from "./ProductGallery";
 import { useContextElement } from "@/context/Context";
 import { formatPrice } from "@/lib/format";
 import { VENDOR_NAME, DELIVERY_ESTIMATE, RETURN_NOTE, STORE_INFO } from "@/lib/woocommerce/product-info-config";
-import { getColorSwatch } from "@/lib/woocommerce/colors";
+import { getColorSwatch, isColorAttribute } from "@/lib/woocommerce/colors";
 import { wishlistEntry } from "@/lib/woocommerce/wishlist";
 import {
   findVariation,
@@ -42,6 +42,23 @@ export default function ProductPurchase({ product }) {
     }
     return list.length ? list : [{ id: 0, src: product.imgSrc, alt: product.title }];
   }, [product]);
+
+  // Couleur choisie : sa paire boxing (image de la variation) + mannequin passe en tete de galerie.
+  // Le mannequin est retrouve par le nom de fichier (…-boxing-… -> …-mannequin-…).
+  const colorAttr = variationAttrs.find((a) => isColorAttribute(a.name));
+  const chosenColor = colorAttr ? selection[colorAttr.name] : undefined;
+  const galleryImages = useMemo(() => {
+    if (!chosenColor) return images;
+    const boxing = product.variations.find(
+      (v) =>
+        v.image &&
+        v.attributes.some((a) => isColorAttribute(a.name) && a.option === chosenColor)
+    )?.image;
+    if (!boxing) return images;
+    const mannequin = images.find((i) => i.src === boxing.src.replace("boxing", "mannequin"));
+    const first = [boxing, mannequin].filter(Boolean);
+    return [...first, ...images.filter((i) => !first.some((f) => f.src === i.src))];
+  }, [images, chosenColor, product]);
 
   const price = variation ? variation.price : product.price;
   const regular = variation ? variation.regularPrice : product.oldPrice;
@@ -111,7 +128,7 @@ export default function ProductPurchase({ product }) {
           <div className="row">
             <div className="col-md-6">
               <div className="tf-product-media-wrap sticky-top">
-                <ProductGallery images={images} activeSrc={variation?.image?.src} />
+                <ProductGallery key={chosenColor || "all"} images={galleryImages} activeSrc={galleryImages[0]?.src} />
               </div>
             </div>
             <div className="col-md-6">
