@@ -31,7 +31,7 @@ export default function WooRelatedProducts({ products, title = "Produits similai
               pagination={{ clickable: true, el: ".spd-related" }}
             >
               {products.map((product) => (
-                <SwiperSlide key={product.id} className="swiper-slide">
+                <SwiperSlide key={product.cardKey ?? product.id} className="swiper-slide">
                   <WooProductCard product={product} />
                 </SwiperSlide>
               ))}

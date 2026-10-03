@@ -8,7 +8,7 @@ export default function ProductGrid({ products }) {
   return (
     <div className="tf-grid-layout tf-col-2 lg-col-3 xl-col-4">
       {products.map((product) => (
-        <WooProductCard key={product.id} product={product} gridClass="grid" />
+        <WooProductCard key={product.cardKey ?? product.id} product={product} gridClass="grid" />
       ))}
     </div>
   );

@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import { useContextElement } from "@/context/Context";
 import { formatPrice } from "@/lib/format";
@@ -14,9 +15,18 @@ export default function WooProductCard({ product, gridClass = "" }) {
 
   // Variations visibles sur la carte : pastilles de couleur + choix de taille/pointure.
   const colorAttr = (product.attributes || []).find((a) => isColorAttribute(a.name) && a.options?.length);
+  // `cardColors` : groupe de 4 couleurs de cette carte (voir lib/woocommerce/cardGroups.js).
+  const cardColors = product.cardColors || [];
   const swatches = (colorAttr?.options || [])
+    .filter((option) => !cardColors.length || cardColors.some((c) => c.option === option))
     .map((option) => ({ option, hex: getColorSwatch(colorAttr.name, option) }))
     .filter((s) => s.hex);
+  const [selected, setSelected] = useState(null);
+  const active = cardColors.find((c) => c.option === selected);
+  const imgSrc = active?.image || product.imgSrc;
+  const imgHover = active?.image || product.imgHover;
+  const price = active?.price ?? product.price;
+  const oldPrice = active ? active.oldPrice : product.oldPrice;
   const sizeAttrs = isVariable
     ? (product.attributes || []).filter((a) => a.variation && !isColorAttribute(a.name) && a.options?.length)
     : [];
@@ -47,14 +57,14 @@ export default function WooProductCard({ product, gridClass = "" }) {
         <Link href={href} className="product-img">
           <img
             className="lazyload img-product"
-            src={product.imgSrc}
+            src={imgSrc}
             alt={product.title}
             width={600}
             height={800}
           />
           <img
             className="lazyload img-hover"
-            src={product.imgHover}
+            src={imgHover}
             alt={product.title}
             width={600}
             height={800}
@@ -108,15 +118,20 @@ export default function WooProductCard({ product, gridClass = "" }) {
           {product.title}
         </Link>
         <span className="price">
-          {product.oldPrice && (
-            <span className="old-price">{formatPrice(product.oldPrice)}</span>
+          {oldPrice && (
+            <span className="old-price">{formatPrice(oldPrice)}</span>
           )}{" "}
-          {formatPrice(product.price)}
+          {formatPrice(price)}
         </span>
         {swatches.length > 0 && (
           <ul className="list-color-product" aria-label="Couleurs disponibles">
             {swatches.map((s) => (
-              <li key={s.option} className="list-color-item hover-tooltip tooltip-bot">
+              <li
+                key={s.option}
+                className={`list-color-item hover-tooltip tooltip-bot ${selected === s.option ? "active" : ""}`}
+                onClick={() => setSelected(s.option)}
+                style={{ cursor: "pointer" }}
+              >
                 <span className="tooltip color-filter">{s.option}</span>
                 <span
                   className="swatch-value"
