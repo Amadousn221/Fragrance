@@ -55,7 +55,7 @@ export default function ProductPurchase({ product }) {
         v.attributes.some((a) => isColorAttribute(a.name) && a.option === chosenColor)
     )?.image;
     if (!boxing) return images;
-    const mannequin = images.find((i) => i.src === boxing.src.replace("boxing", "mannequin"));
+    const mannequin = images.find((i) => i.src === boxing.src.replace(/boxing|studio/, "mannequin"));
     const first = [boxing, mannequin].filter(Boolean);
     return [...first, ...images.filter((i) => !first.some((f) => f.src === i.src))];
   }, [images, chosenColor, product]);
